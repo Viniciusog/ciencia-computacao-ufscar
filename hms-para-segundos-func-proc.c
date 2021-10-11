@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 // Função - Horas, minutos, segundos para segundos
-long int hmsParaSegundos(int h, int m, int s) {
+long int hms_para_s(int h, int m, int s) {
     
     int horasEmSeg, minEmSeg;
     
@@ -12,26 +12,29 @@ long int hmsParaSegundos(int h, int m, int s) {
 }
 
 // Procedimento
-void hmsParaSegundosProc(int *ponteiroHoras, int *ponteiroMin, int *ponteiroSeg) {
-    // Adiciona no endereço contido pelo ponteiroSeg o valor que já está no 
-    // endereço contido pelo ponteiroSeg + o valor que está no endereço contido pelo ponteiroHoras * 3600 
-    // + o vlaor que está no endereço contido pelo ponteiroMin * 60.
-    *ponteiroSeg = *ponteiroSeg + (*ponteiroHoras * 3600) + (*ponteiroMin * 60);
+void s_para_hms(int segundos, int *ponteiroHoras, int *ponteiroMin, int *ponteiroSeg) {
+    // Adiciona no endereço contido pelo ponteiroHoras o valor dos segundos em horas;
+    *ponteiroHoras = segundos / 3600;
+    *ponteiroMin = (segundos % 3600) / 60;
+    *ponteiroSeg = (segundos % 3600) % 60;
 }
 
 int main()
 {
-    int horas=3, min=40, seg=30;
+    // -- USANDO FUNÇÃO --
+    // printf("3h:40m:30s = %ld segundos", hmsParaSegundos(3, 40, 30));
+    
+    // ----------------------------------------------------------------
+    
+    // -- USANDO PROCEDIMENTO --
+    int horas, min, seg;
     // Ponteiros
     int *endHoras = &horas;
     int *endMin = &min;
     int *endSeg = &seg;
     
-    // Função
-    // printf("3h:40m:30s = %ld segundos", hmsParaSegundos(horas, min, seg));
-    
     // Procedimento
-    hmsParaSegundosProc(endHoras, endMin, endSeg);
-    printf("3h:40m:30s = %d segundos", seg);
+    s_para_hms(144000, endHoras, endMin, endSeg);
+    printf("%02d:%02d:%02d\n", horas, min, seg);
     return 0;
 }
