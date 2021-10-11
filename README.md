@@ -1,2 +1,2 @@
-# exercicios-algoritmos-ufscar
+# exercicíos-algoritmos-ufscar
 Exercícios de programação feitos durante a matéria de Construção e Programação de Algoritmos
