@@ -4,7 +4,6 @@
 
 #define N 5
 
-
 typedef struct hashMap {
     double valor;
     char chave[30];
@@ -49,7 +48,7 @@ int main(int argc, char const *argv[])
     lerValoresHashMap(myHashMap);
     printarValoresHashMap(myHashMap);
 
-
+    // Nesse caso só irá funcionar caso eu tenha adicionado uma chave uva
     double valor = pegarValorPorChave(myHashMap, "Uva");
     printf("\n O valor encontrado com a chave 'Uva' é: %lf", valor);
 
