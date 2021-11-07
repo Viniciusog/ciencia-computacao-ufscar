@@ -1,5 +1,4 @@
 // Aluno: Vinícius de Oliveira Guimarães
-// RA: 802431
 // Ciência da Computação
 // Construção de algoritmos e programação
 

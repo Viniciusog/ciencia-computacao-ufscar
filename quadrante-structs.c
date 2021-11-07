@@ -2,7 +2,6 @@
 
 //Aluno: Vinícius de Oliveira Guimarães
 //Ciência da Computação
-//RA: 802431
 
 int main()
 {
