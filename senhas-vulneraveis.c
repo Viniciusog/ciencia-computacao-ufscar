@@ -92,7 +92,6 @@ int main(int argc, char const *argv[])
     }
 
     // VERIFICAR QUAIS SENHAS POSSUEM A MAIOR QUANTIDADE DE NÚMEROS FREQUENTES
-    int maiorQtdDeNumerosFrequentes = 0;
     
     printf("\nDígitos das senhas:\n");
     // Para cada senha
@@ -117,11 +116,6 @@ int main(int argc, char const *argv[])
             }
         }
         printf("\n");
-        
-        // Verificaremos qual a maior quantidade de números frequentes em uma única senha
-        if (numeroDigitosComuns > maiorQtdDeNumerosFrequentes) {
-            maiorQtdDeNumerosFrequentes = numeroDigitosComuns;
-        }
     }
     
    
@@ -130,10 +124,9 @@ int main(int argc, char const *argv[])
     // contabilizados na variável maiorQtdDeNumerosFrequentes.
     // Se tiver a maior quantidade de dígitos frequentes, então mostraremos na tela
     for (int i = 0; i < 5; i++) {
-        if (senhasDigitos[i][5] == maiorQtdDeNumerosFrequentes) {
+        if (senhasDigitos[i][5] >= 2) {
             printf("%d \n",senhas[i]);
         }
     } 
-
     return 0;
 }
