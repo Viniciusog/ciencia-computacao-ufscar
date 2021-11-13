@@ -2,12 +2,29 @@
 
 int main(int argc, char const *argv[])
 {
+
+    //Quantidade de senhas
+    int N;
+    
+    printf("Insira a quantidade de senhas.\n");
+    scanf("%d", &N);
+    
+    //Array que contém as senhas digitadas
+    int senhas[N];
+    
+    for (int i = 0; i < N; i++) {
+        scanf("%d", &senhas[i]);
+    }
+    
+    //Cada dígito tem uma pontuação de vezes que aparece em senhas diferentes
     int pontuacoesCadaNumero[10] = {0};
-    int senhas[5] = {8765, 9776, 1332, 1432, 1765};
-    int senhasDigitos[5][5]; // senha // dígito -> o 5º dígito funciona como uma pontuação para saber quantos dígitos comuns essa palavra tem
+    
+    // Matriz que relaciona cada senha com seus dígitos
+    // senha // dígito -> o 5º dígito funciona como uma pontuação para saber quantos dígitos comuns essa palavra tem
+    int senhasDigitos[N][5]; 
     
     int i, j, k;
-    for (i = 0; i < 5; i++) { // Para cada senhas
+    for (i = 0; i < N; i++) { // Para cada senhas
         
         // PEGAR OS DÍGITOS
         int escolhidos[4] = {0};
@@ -95,7 +112,7 @@ int main(int argc, char const *argv[])
     
     printf("\nDígitos das senhas:\n");
     // Para cada senha
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < N; i++) {
         // Iremos contar a quantidade de números frequentes na senha
         int numeroDigitosComuns = 0;
         // Percorre cada dígito da senha
@@ -123,7 +140,7 @@ int main(int argc, char const *argv[])
     // Para cada senha, iremos verificar se esta senha contém a maior quantidade de dígitos frequentes
     // contabilizados na variável maiorQtdDeNumerosFrequentes.
     // Se tiver a maior quantidade de dígitos frequentes, então mostraremos na tela
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < N; i++) {
         if (senhasDigitos[i][5] >= 2) {
             printf("%d \n",senhas[i]);
         }
