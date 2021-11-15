@@ -4,6 +4,8 @@
 int main()
 {
     
+    // Minha matriz é um ponteiro que aponta para um vetor de ponteiros
+    // Cada item da minha matriz é um ponteiro que aponta para um vetor de inteiros
     int **mat;
     
     // calloc(3, sizeof(int *)) => Está alocando memória para 3 ponteiros de inteiros, logo, 
