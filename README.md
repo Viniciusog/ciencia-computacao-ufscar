@@ -1,2 +1,2 @@
-# exercícios-algoritmos-ufscar
-Exercícios de programação feitos durante a matéria de Construção e Programação de Algoritmos
+# computer-science-ufscar
+Exercícios realizados, aulas e PDFs. Ciência da computação.
