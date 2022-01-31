@@ -228,6 +228,7 @@ int verificarPilhasIguais(Pilha *s, Pilha *s2) {
 
         if (topoS != topoS2) {
             igual = 0;
+	    break;
         }
     }
 
