@@ -220,17 +220,42 @@ int verificarPilhasIguais(Pilha *s, Pilha *s2) {
         return 0;
     }
 
+    Pilha *aux1;
+    aux1 = criaPilha();
+    Pilha *aux2;
+    aux2 = criaPilha();
+
     int igual = 1;
 
     while (!pilhaVazia(s)) {
         char topoS = desempilha(s);
         char topoS2 = desempilha(s2);
 
+        empilha(aux1, topoS);
+        empilha(aux2, topoS2);
+
         if (topoS != topoS2) {
             igual = 0;
-	    break;
+            break;
         }
     }
+
+    // Depois que desempilhamos das pilhas,
+    // para realizar a verificação,
+    // precisamos empilhar novamente
+
+    while (!pilhaVazia(aux1)) {
+        char valor = desempilha(aux1);
+        empilha(s, valor);
+    }
+
+    while (!pilhaVazia(aux2)) {
+        char valor = desempilha(aux2);
+        empilha(s2, valor);
+    }
+
+    liberaPilha(aux1);
+    liberaPilha(aux2);
 
     return igual;
 }

@@ -53,13 +53,20 @@ int main () {
 	Pilha *p3;
 	p3 = criaPilha();
 
-	empilha(p3, 'A');
-	empilha(p3, 'B');
-	empilha(p3, 'C');
+	empilha(p3, 'a');
+	empilha(p3, 'b');
+	empilha(p3, 'c');
 
 	printf("\nVerificar se duas pilhas são iguais: ");
 	printf("\n['A', 'B', 'C'] e ['A', 'B', 'C']: %s", verificarPilhasIguais(p1, p2) == 1 ? "Iguais" : "Diferentes");
 	printf("\n['A', 'B', 'C'] e ['a', 'b', 'c']: %s", verificarPilhasIguais(p1, p3) == 1 ? "Iguais" : "Diferentes");
+
+    printf("\nPilha p1:\n");
+    imprimePilha(p1);
+    printf("\nPilha p2:\n");
+    imprimePilha(p2);
+    printf("\nPilha p3:\n");
+    imprimePilha(p3);
 
 	liberaPilha(s);
 	liberaPilha(p1);
