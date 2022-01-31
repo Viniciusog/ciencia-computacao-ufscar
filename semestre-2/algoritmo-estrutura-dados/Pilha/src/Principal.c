@@ -5,7 +5,6 @@
 #include "pilha.h"
 
 int main () {
-
 	Pilha *s;
 	s = criaPilha(s);
 
@@ -55,17 +54,17 @@ int main () {
 	p3 = criaPilha();
 
 	empilha(p3, 'A');
-    empilha(p3, 'B');
+	empilha(p3, 'B');
 	empilha(p3, 'C');
 
 	printf("\nVerificar se duas pilhas são iguais: ");
 	printf("\n['A', 'B', 'C'] e ['A', 'B', 'C']: %s", verificarPilhasIguais(p1, p2) == 1 ? "Iguais" : "Diferentes");
 	printf("\n['A', 'B', 'C'] e ['a', 'b', 'c']: %s", verificarPilhasIguais(p1, p3) == 1 ? "Iguais" : "Diferentes");
 
-    liberaPilha(s);
-    liberaPilha(p1);
-    liberaPilha(p2);
-    liberaPilha(p3);
+	liberaPilha(s);
+	liberaPilha(p1);
+	liberaPilha(p2);
+	liberaPilha(p3);
 
 	return 0;
 }
