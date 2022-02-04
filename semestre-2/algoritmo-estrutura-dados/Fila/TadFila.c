@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "fila.h"
-#include "TadPilha.c"
+#include "pilha.h"
 
 #define TAM_MAX 10
 
