@@ -1,3 +1,5 @@
+#ifndef ALUNO_H
+#define ALUNO_H
 #include <string>
 using std::string;
 
@@ -24,3 +26,5 @@ class Aluno {
     static int qtdAlunos;  
     static int contadorRA;
 };
+
+#endif
