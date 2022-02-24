@@ -56,20 +56,20 @@ int Aluno::getContadorRA() {
     return contadorRA;
 }
 
-void Aluno::addNota(float n, int posicao) {
+void Aluno::addNota(float nota, int posicao) {
     // Se podemos inserir 5 notas, o array vai de 0 até 4
     if (posicao >= 0 && posicao < qtdNotas) {
-        notas[posicao] = n;
+        notas[posicao] = nota;
     }
 }
 
+// Se a nota não foi inserida pelo usuário, mostra um traço '-'
 void Aluno::imprimirNotas() {
     for (int i = 0; i < qtdNotas; i++) {
-        
         if (notas[i] != -1) {
             cout << setprecision(2) << notas[i] << " ";
         } else {
-            cout << setprecision(2) << "- ";
+            cout << "- ";
         }
     }
     cout << endl;

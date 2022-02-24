@@ -9,7 +9,7 @@ class Aluno {
         int getRA() const;
         void setNome(string n);
         string getNome() const;
-        void addNota(float nt, int posicao);
+        void addNota(float nota, int posicao);
         float getNota() const;
         void imprimirNotas();
         static int getQtdAlunos();
@@ -20,6 +20,7 @@ class Aluno {
         float * notas; // Vetor dinâmico de notas
         int qtdNotas;
     
-    static int qtdAlunos;  // Atributo da classe e não do objeto
+    // Atributos da classe e não do objeto
+    static int qtdAlunos;  
     static int contadorRA;
 };
