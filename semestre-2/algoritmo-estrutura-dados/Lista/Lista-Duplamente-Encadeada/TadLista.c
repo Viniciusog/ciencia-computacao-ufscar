@@ -75,7 +75,6 @@ void imprimir(Node *cabeca) {
 void buscaInsere(Node *cabeca, char valor1, char valor2) {
     // ⇆ é dupla ligação
     // → é ligação simples para o próximo
-
     Node *atual = cabeca->proximo;
     
     Node *novo = malloc(sizeof(Node));
@@ -85,7 +84,7 @@ void buscaInsere(Node *cabeca, char valor1, char valor2) {
     Node *elAnterior = malloc(sizeof(Node));
 
     // [  ] ⇆ [] ⇆ [] ⇆ [] → null
-    while (atual->conteudo != valor1 && atual != NULL) {
+    while (atual != NULL && atual->conteudo != valor1) {
         if (atual->proximo == NULL) {
             elAnterior = atual;
         }
@@ -93,7 +92,7 @@ void buscaInsere(Node *cabeca, char valor1, char valor2) {
     }
 
     // Se for inserir elemento entre dois elementos
-    if (atual->conteudo == valor1) {
+    if (atual != NULL && atual->conteudo == valor1) {
         // [Cabeça] ⇆ [] ⇆ [atual] ⇆ [] → null
         // [Cabeça] ⇆ [] ⇆ [novo] ⇆ [atual] ⇆ [] → null
         novo->proximo = atual;
@@ -141,4 +140,3 @@ void buscaRemove(Node *cabeca, char valor) {
         }
     }
 }
-
