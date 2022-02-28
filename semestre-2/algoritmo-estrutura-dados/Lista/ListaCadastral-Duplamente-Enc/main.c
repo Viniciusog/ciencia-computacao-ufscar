@@ -13,17 +13,21 @@ int main() {
     inserir(cabeca, 'H');
     inserir(cabeca, 'E');
 
+    printf("Lista cadastral: ");
     imprimir(cabeca);
 
     remover(cabeca, 'E');
 
     printf("\n");
+    printf("\nLista ao remover o primeiro 'E': ");
     imprimir(cabeca);
 
     char maiorAscii = maiorValorASCII(cabeca);
-    printf("\n%c", maiorAscii);
+    printf("\nMaior valor ASCII: %c", maiorAscii);
 
     printf("\n");
     buscaInserir(cabeca, 'B', 'R');
+
+    printf("\nLista ao realizar 'buscaInserir': ");
     imprimir(cabeca);
 }

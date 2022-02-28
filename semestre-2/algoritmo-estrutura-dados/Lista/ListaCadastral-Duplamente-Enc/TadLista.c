@@ -14,6 +14,10 @@ Node *criar() {
     return cabeca;
 }
 
+int vazia(Node *cabeca) {
+    return cabeca->proximo == NULL ? 1 : 0;
+}
+
 void inserir(Node *cabeca, char valor) {
     Node *novo;
     novo = (Node *) malloc(sizeof(Node));
