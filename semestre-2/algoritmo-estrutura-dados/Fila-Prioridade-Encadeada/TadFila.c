@@ -64,6 +64,8 @@ void inserir(Fila *fila, int idade) {
 }
 
 int remover(Fila *fila) {
+    if (fila->tam == 0) return NULL;
+
     Node *paraRemover = fila->inicio;
     int valor = paraRemover->conteudo;
 
@@ -98,4 +100,3 @@ void imprimir(Fila *fila) {
         atual = atual->proximo;
     }
 }
-
