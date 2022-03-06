@@ -10,11 +10,11 @@ int main() {
     inserir(cabeca, 'Y');
     inserir(cabeca, 'D');
 
-    imprimir(cabeca); // D Y A Y T
+    imprimir(cabeca); // D Y A Y Tsdfgdfg
     buscaRemove(cabeca, 'Y');
     printf("\n");
     
-    imprimir(cabeca); // D A Y T
+    imprimir(cabeca); // D A Y Tdfgfdg
     printf("\n");
 
     buscaInsere(cabeca, 'A', 'M'); 

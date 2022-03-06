@@ -1,3 +1,4 @@
+
 typedef struct node Node;
 
 // Primitivos
