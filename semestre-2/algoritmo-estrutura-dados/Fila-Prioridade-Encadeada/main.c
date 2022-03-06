@@ -15,4 +15,8 @@ int main() {
     // A fila terá os elementos em ordem
     // Quem está no início da fila tem valor maior
     imprimir(fila);
+
+    remover(fila);
+    printf("\n");
+    imprimir(fila);
 }
