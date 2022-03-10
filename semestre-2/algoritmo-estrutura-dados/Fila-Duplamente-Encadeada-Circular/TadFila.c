@@ -80,6 +80,13 @@ void imprimir(Fila *fila) {
 }
 
 void destruir(Fila *fila) {
+    while (fila->inicio != NULL) {
+        remover(fila);
+    }
+    free(fila);
+} 
+
+/* void destruir(Fila *fila) {
     Node *atual = fila->inicio;
     //Se a fila tiver nenhum elemento, não executará o for, pois i é igual a 0 (igual ao tamanho)
     //Se a fila tiver apenas um elemento, o for executará uma vez, pois i será 0 (menor que 1)
@@ -89,4 +96,4 @@ void destruir(Fila *fila) {
         atual = atual->proximo;
     }
     free(fila);
-}
+} */
