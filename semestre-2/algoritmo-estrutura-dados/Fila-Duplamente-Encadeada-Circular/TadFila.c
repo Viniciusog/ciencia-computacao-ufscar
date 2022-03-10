@@ -1,3 +1,4 @@
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "fila.h"
@@ -64,6 +65,10 @@ char remover(Fila *fila) {
     free(paraRemover);
     (fila->tam)--;
     return valor;
+}
+
+int vazia(Fila *fila) {
+    return fila->inicio == NULL ? 1 : 0;
 }
 
 void imprimir(Fila *fila) {
