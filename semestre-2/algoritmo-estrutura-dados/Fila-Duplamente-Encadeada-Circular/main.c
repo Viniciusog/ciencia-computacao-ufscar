@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-// #include "fila.h"
-#include "TadFila.c"
+#include "fila.h"
 
 int main() {
     Fila *fila = criar();
