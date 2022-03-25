@@ -4,7 +4,7 @@
 #include <stdlib.h>
 
 int main() {
-    Node *node = NULL;
+    Node *node = criar();
 
     printf("Vazia? %d\n", vazia(&node));
     
@@ -24,11 +24,19 @@ int main() {
     Node *maiorEl = pegarMaiorElemento(&node);
     printf("\nMaior elemento: %d\n", maiorEl->conteudo);
     inOrdem(&node);
-
-    Node *el = pegarElemento(&node, 25);
+    
+    int ok = 0;
+    Node *el = pegarElemento(&node, 25, &ok);
     printf("\nElemento pego: %d\n", el != NULL ? el->conteudo : -1);
+
+    int estaNaArvore = esta_na_arvore(&node, 13);
+    int estaNaArvore2 = esta_na_arvore(&node, 674);
+    printf("13 está na árvore? %s\n", estaNaArvore == 1 ? "sim" : "não");
+    printf("68 está na árvore? %s\n", estaNaArvore2 == 1 ? "sim" : "não");
 
     remover(&node, 7);
     inOrdem(&node);
 
+    printf("\nAltura: %d", altura(&node));
+    destroi(&node);
 }

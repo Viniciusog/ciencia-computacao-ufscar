@@ -10,25 +10,8 @@ typedef struct node {
 
 typedef Node *Arvore;
 
-/* Arvore inserir(Arvore a, int valor) {
-    //Se a árvore estiver vazia
-    if (a == NULL) {
-        Node *novo = malloc(sizeof(Node));
-        novo->conteudo = valor;
-        novo->dir = NULL;
-        novo->esq = NULL;
-        return novo;
-    } else if (a->conteudo == valor) {
-        return a;
-    } else if (a->conteudo > valor) {
-        a->esq = inserir(a->esq, valor);
-    } else {
-        a->dir = inserir(a->dir, valor);
-    }
-} */
-
-int vazia(Node **a) {
-    return (*a) == NULL ? 1 : 0;
+Node *criar() {
+    return NULL;
 }
 
 void inserir(Node **a, int valor) {
@@ -43,6 +26,16 @@ void inserir(Node **a, int valor) {
     } else if ((*a)->conteudo < valor) {
         inserir(&(*a)->dir, valor);
     }
+}
+
+int vazia(Node **a) {
+    return (*a) == NULL ? 1 : 0;
+}
+
+int esta_na_arvore(Node **a, int valor) {
+    int ok = 0;
+    Node *algo = pegarElemento(&(*a), valor, &ok);
+    return algo == NULL ? 0 : 1;
 }
 
 Node *pegarMaiorElemento(Node **a) {
@@ -61,13 +54,18 @@ Node *pegarMenorElemento(Node **a) {
     return atual;
 }
 
-Node *pegarElemento(Node **a, int valor) {
-    if ((*a) == NULL || (*a)->conteudo == valor) {
+Node *pegarElemento(Node **a, int valor, int *ok) {
+    if ((*a) == NULL) {
+        *ok = 1;
         return *a;
-    } else if ((*a)->conteudo < valor) {
-        return pegarElemento(&(*a)->dir, valor);
+    } else if ((*a)->conteudo == valor) {
+        *ok = 1;
+        return *a;
+    }
+    else if ((*a)->conteudo < valor) {
+        return pegarElemento(&(*a)->dir, valor, &(*ok));
     } else if ((*a)->conteudo > valor) {
-        return pegarElemento(&(*a)->esq, valor);
+        return pegarElemento(&(*a)->esq, valor, &(*ok));
     }
 }
 
@@ -77,10 +75,10 @@ Node *remover(Node **a, int valor) {
     }
     else if ((*a)->conteudo > valor) {
         (*a)->esq = remover(&(*a)->esq, valor);
-        printf("\n(*a)->esq = %d\n", (*a)->esq->conteudo);
+        //printf("\n(*a)->esq = %d\n", (*a)->esq->conteudo);
     } else if ((*a)->conteudo < valor) {
         (*a)->dir = remover(&(*a)->dir, valor);
-        printf("\n(*a)->dir = %d\n", (*a)->dir->conteudo);
+        //printf("\n(*a)->dir = %d\n", (*a)->dir->conteudo);
     } 
     // Achamos o elemento. ((*a)->conteudo == valor)
     else {
@@ -93,7 +91,7 @@ Node *remover(Node **a, int valor) {
         else if ((*a)->esq == NULL) {
             // Se a esquerda for nula, então retorna ponteiro da direita
             Node *temp = (*a)->dir;
-            printf("\nTemp: %d\n", temp->conteudo);
+            //printf("\nTemp: %d\n", temp->conteudo);
             free(*a);
             return temp;
         } else if ((*a)->dir == NULL) {
@@ -111,7 +109,7 @@ Node *remover(Node **a, int valor) {
     return *a;
 }
 
-
+// Imprimir todos os elementos em ordem crescente
 void inOrdem(Node **a) {
     if (*a == NULL) {
         return;
@@ -121,15 +119,25 @@ void inOrdem(Node **a) {
     inOrdem(&(*a)->dir);
 }
 
-
-int altura(Arvore a) {
+// Calcula a altura de uma árvore binária
+int altura(Node **a) {
     int hEsq, hDir;
-    if (a == NULL) {
+    if (*a == NULL) {
         return -1;
     }
-
-    hEsq = altura(a->esq) + 1;
-    hDir = altura(a->dir) + 1;
+    
+    hEsq = altura(&(*a)->esq) + 1;
+    hDir = altura(&(*a)->dir) + 1;
 
     return hEsq > hDir ? hEsq : hDir;
+}
+
+void destroi(Node **a) {
+    if (*a == NULL) {
+        return;
+    } else {
+        destroi(&(*a)->esq);
+        destroi(&(*a)->dir);
+        free((*a));
+    }
 }
