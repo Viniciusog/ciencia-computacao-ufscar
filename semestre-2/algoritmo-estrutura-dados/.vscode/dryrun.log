@@ -1,0 +1,4 @@
+make -f c:\Users\SAMSUNG\Desktop\Computação\semestre-2\algoritmo-estrutura-dados\makefile --dry-run --keep-going --print-directory
+'make' n�o � reconhecido como um comando interno
+ou externo, um programa oper�vel ou um arquivo em lotes.
+ 

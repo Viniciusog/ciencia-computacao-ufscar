@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-//#include "lista.h"
-#include "TadLista.c"
+#include "lista.h"
 
 int main() {
     Lista *carrinhoCompras = criar();
@@ -24,11 +23,6 @@ int main() {
 
     Elemento *primeiro;
     pegaOPrimeiro(carrinhoCompras, &primeiro);
-
     printf("\nPrimeiro elemento do carrinho: %c ", primeiro->conteudo);
-
     printf("\nQuantidade itens errados: %d", itensCompradosErroneamente(carrinhoCompras, listaCompras));
-
-
-    //printf("Quantidade comprada errada: %d", itensCompradosErroneamente(carrinhoCompras, listaCompras));
 }

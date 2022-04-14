@@ -1,3 +1,4 @@
+
 typedef struct elemento Elemento;
 typedef struct lista Lista;
 

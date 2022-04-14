@@ -1,3 +1,4 @@
+
 typedef struct array Array;
 
 Array *criar();
