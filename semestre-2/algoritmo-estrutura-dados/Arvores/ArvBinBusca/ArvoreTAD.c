@@ -1,4 +1,4 @@
-#include "Arvore.h"
+#include "./Arvore.h"
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -53,34 +53,38 @@ Node *menorElemento(Node *node) {
     }
 }
 
-Node *remover(Node **node, int valor) {
+Node *Remove(Node **node, int valor, int *ok) {
     if (*node == NULL) {
+        *ok = 0;
         return NULL;
     } 
     //esquerda
     else if ((*node)->conteudo > valor) {
-        (*node)->esq = remover(&(*node)->esq, valor);
+        (*node)->esq = Remove(&(*node)->esq, valor, ok);
     } 
     //direita
     else if ((*node)->conteudo < valor) {
-        (*node)->dir = remover(&(*node)->dir, valor);
+        (*node)->dir = Remove(&(*node)->dir, valor, ok);
     } 
     //encontrou o elemento
     else if ((*node)->conteudo == valor) {
         //sem filhos
         if ((*node)->dir == NULL && (*node)->esq == NULL) {
             free(*node);
+            *ok = 1;
             return NULL;
         } 
         //1 filho na esq
         else if ((*node)->dir == NULL) {
             Node *filhoEsq = (*node)->esq;
+            *ok = 1;
             free(*node);
             return filhoEsq;
         } 
         //1 filho na dir
         else if ((*node)->esq == NULL) {
             Node *filhoDir = (*node)->dir;
+            *ok = 1;
             free(*node);
             return filhoDir;
         } 
@@ -88,7 +92,9 @@ Node *remover(Node **node, int valor) {
         else {
             Node *menorDir = menorElemento((*node)->dir);
             (*node)->conteudo = menorDir->conteudo;
-            (*node)->dir = remover(&(*node)->dir, menorDir->conteudo);
+            int v = menorDir->conteudo;
+            (*node)->dir = Remove(&(*node)->dir, v, ok);
+            *ok = 1;
         }
     }
     return *node;

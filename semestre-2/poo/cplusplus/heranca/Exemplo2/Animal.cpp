@@ -1,4 +1,6 @@
 #include "Animal.h"
+#include <iostream>
+
 
 using namespace std;
 // #define std::endl;
@@ -8,16 +10,8 @@ namespace poo {
         this->peso = p;
     }
 
-    Animal::~Animal() {
-
-    }
-
-    void Animal::setPeso(float peso) {
-        this->peso = peso;
-    }
-
     float Animal::getPeso() const {
-        return this->getPeso();
+        return this->peso;
     }
 
     void Animal::imprimir() const {

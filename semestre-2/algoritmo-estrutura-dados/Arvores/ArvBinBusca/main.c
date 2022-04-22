@@ -1,4 +1,4 @@
-#include "Arvore.h"
+#include "./Arvore.h"
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -9,7 +9,7 @@ int main() {
     inserir(&arvore, 35, &ok);
     inserir(&arvore, 27, &ok);
     inserir(&arvore, 49, &ok);
-    remover(&arvore, 35);
+    Remove(&arvore, 35, &ok);
     inOrdem(arvore);
     inserir(&arvore, 34, &ok);
     printf("\n");

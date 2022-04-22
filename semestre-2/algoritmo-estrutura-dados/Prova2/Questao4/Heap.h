@@ -1,0 +1,1 @@
+int isHeap(int v[], int lastPos);

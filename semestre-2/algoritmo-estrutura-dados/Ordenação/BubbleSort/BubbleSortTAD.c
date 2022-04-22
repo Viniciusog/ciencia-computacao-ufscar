@@ -8,19 +8,7 @@ Se o anterior for maior do que o atual, então trocamos os elementos.
 Pega o maior elemento de cada passada do for e coloca no final do array.
 */
 
-void bubbleSortT(int v[], int n) {
-    for (int j = 0; j < n; j++) {
-        for (int i = 1; i  < n - j; i++) {
-            if (v[i - 1] > v[i]) {
-                int aux = v[i];
-                v[i] = v[i-1];
-                v[i - 1] = aux;
-            }
-        }
-    }
-}
-
-void bubbleSort(int v[], int n) {
+void BubbleSort(int v[], int n) {
     int trocou = 0;
     for (int j = 0; j < n; j++) {
         trocou = 0;

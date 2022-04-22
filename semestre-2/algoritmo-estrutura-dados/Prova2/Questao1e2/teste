@@ -1,0 +1,48 @@
+#include "Arvore.h"
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct node {
+    int chave;
+    Node *esq;
+    Node *dir;
+} Node;
+
+typedef Node ABB;
+
+ABB *criar() {
+    return NULL;
+}
+
+/*
+A função implementada apenas insere um valor se o mesmo não tiver
+sido adicionado anteriormente.
+*/
+void inserir(ABB **node, int ch) {
+    if ((*node) == NULL) {
+        Node *novo = malloc(sizeof(Node));
+        novo->dir = NULL;
+        novo->esq = NULL;
+        novo->chave = ch;
+        (*node) = novo;
+    } else {
+        if ((*node)->chave > ch) {
+            //inserir na esquerda
+            inserir(&(*node)->esq, ch);
+        } else if ((*node)->chave < ch) {
+            //inserir na direita
+            inserir(&(*node)->dir, ch);
+        }  
+    }
+}
+
+int getAltura1(Node *node) {
+    if (node == NULL) {
+         return 0;
+    }
+
+    int hEsq = getAltura1(node->esq) + 1;
+    int hDir = getAltura1(node->dir) + 1;
+
+    return hEsq > hDir ? hEsq : hDir;
+}

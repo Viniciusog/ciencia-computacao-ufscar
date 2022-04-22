@@ -6,7 +6,7 @@
 int main() {
     Node *node = criar();
 
-    printf("Vazia? %d\n", vazia(&node));
+    printf("Vazia? %s\n", vazia(&node) == 1 ? "sim" : "não");
     
     inserir(&node, 10);
     inserir(&node, 6);
@@ -19,7 +19,7 @@ int main() {
     inserir(&node, 25);
 
     inOrdem(&node);
-    printf("\nVazia? %d", vazia(&node));
+    printf("\nVazia? %s\n", vazia(&node) == 1 ? "sim" : "não");
 
     Node *maiorEl = pegarMaiorElemento(&node);
     printf("\nMaior elemento: %d\n", maiorEl->conteudo);
@@ -27,13 +27,14 @@ int main() {
     
     int ok = 0;
     Node *el = pegarElemento(&node, 25, &ok);
-    printf("\nElemento pego: %d\n", el != NULL ? el->conteudo : -1);
+    printf("\nPegando elemento 25: %d\n", el != NULL ? el->conteudo : -1);
 
     int estaNaArvore = esta_na_arvore(&node, 13);
     int estaNaArvore2 = esta_na_arvore(&node, 674);
     printf("13 está na árvore? %s\n", estaNaArvore == 1 ? "sim" : "não");
     printf("68 está na árvore? %s\n", estaNaArvore2 == 1 ? "sim" : "não");
 
+    printf("\nRemovendo elemento 7...\n");
     remover(&node, 7);
     inOrdem(&node);
 

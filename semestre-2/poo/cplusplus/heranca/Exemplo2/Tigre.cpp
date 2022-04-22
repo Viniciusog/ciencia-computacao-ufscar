@@ -1,4 +1,9 @@
 #include "Tigre.h"
+#include <iostream>
+
+
+
+using namespace std;
 
 namespace poo { 
     Tigre::Tigre(float peso) : Animal(peso) {
@@ -10,6 +15,6 @@ namespace poo {
     }
 
     void Tigre::imprimir() const {
-        cout << "O peso do tigre é: " << this->getPeso() << "kg" << endl;
+        cout << "O peso do tigre é: " << Tigre::getPeso() << "kg" << endl;
     }
 }

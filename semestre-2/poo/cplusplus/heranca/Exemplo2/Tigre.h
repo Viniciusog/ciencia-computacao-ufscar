@@ -8,7 +8,6 @@ namespace poo {
     class Tigre : public Animal {
         public:
             Tigre(float peso);
-            virtual ~Tigre();
             float getPeso() const;
             void imprimir() const;
     };   
