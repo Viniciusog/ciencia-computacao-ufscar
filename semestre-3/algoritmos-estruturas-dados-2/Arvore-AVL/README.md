@@ -1,9 +1,9 @@
-## Árvore AVL (Árvore balanceada de busca)
+# Árvore AVL (Árvore balanceada de busca)
 
 
-### Resumo da remoção de nó com 2 filhos e balanceamento
+## Resumo da remoção de nó com 2 filhos e balanceamento
 
-#### Remoção de nó com 2 filhos (Com balanceamento -1)
+### Remoção de nó com 2 filhos (Com balanceamento -1)
  
 Passamos C para a função de remover, com o objetivo de remover o elemento D. Ao remover o elemento D, teremos uma diminuição da altura que será passada para C. Como C tem balanceamento -1, então o balanceamento de C será alterado para 0 e retornará para X dizendo que a altura diminuiu.
 
@@ -15,7 +15,7 @@ Como X tem balanceamento 1 e houve uma diminuição da altura na direita, então
 <img title="a title" alt="Alt text" src="./ImagensAVL/bal(-1)-3-noh2filhos.png">
 
 
-#### Remoção de nó com 2 filhos (Com balanceamento 0)
+### Remoção de nó com 2 filhos (Com balanceamento 0)
 
 Passamos C para a função de remover, com o objetivo de remover o elemento D. Assim, ao remover o elemento D, terá uma diminuição da altura que será passada para C. Como o balanceamento de C é 0 e houve uma diminuição da altura por conta da remoção na esquerda, então o bal de C será 1 e retornará para X dizendo que não houve diminuição da altura.
 
@@ -23,7 +23,7 @@ Passamos C para a função de remover, com o objetivo de remover o elemento D. A
 <img title="a title" alt="Alt text" src="./ImagensAVL/bal(0)-2-noh2filhos.png">
 <img title="a title" alt="Alt text" src="./ImagensAVL/bal(0)-3-noh2filhos.png">
 
-#### Remoção de nó com 2 filhos (Com balanceamento 1 e rotação para a esquerda)
+### Remoção de nó com 2 filhos (Com balanceamento 1 e rotação para a esquerda)
 
 Passamos C para a função de remover, com o objetivo de remover o elemento D. Ao remover o elemento D, será retornado para C dizendo que houve uma diminuição da altura. Como o balanceamento de C é 1 e houve uma diminuição da altura na esquerda, então o algoritmo irá verificar o balanceamento de E para realizar as devidas rotações.
 
@@ -37,7 +37,7 @@ Após a rotação, retornaremos para X dizendo que a altura diminuiu e portanto,
 <img title="a title" alt="Alt text" src="./ImagensAVL/bal(1)-5-noh2filhos.png">
 <img title="a title" alt="Alt text" src="./ImagensAVL/bal(1)-6-noh2filhos.png">
 
-#### Remoção de nó com 2 filhos (Com balanceamento 1 e rotação direita-esquerda)
+### Remoção de nó com 2 filhos (Com balanceamento 1 e rotação direita-esquerda)
 
 Passamos C para a função de remover, com o objetivo de remover o elemento D. Ao remover o elemento D, será retornado para C dizendo que houve uma diminuição da altura. Como o balanceamento de C é 1 e houve uma diminuição da altura na esquerda, então o algoritmo irá verificar o balanceamento de E para realizar as devidas rotações.
 
