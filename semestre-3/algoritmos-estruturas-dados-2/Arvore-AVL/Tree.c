@@ -16,6 +16,26 @@ Node *create() {
     return NULL;
 }
 
+// Inserção normal em árvore binária, está aqui apenas para teste
+Node *insert(Node *tree, int key, int value) {
+    if (tree == NULL) {
+        Node *newTree = (Node *) malloc(sizeof(Node));
+        newTree->key = key;
+        newTree->content = value;
+        newTree->father = NULL;
+        newTree->left = NULL;   
+        newTree->right = NULL;
+        return newTree;
+    } else if (key < tree->key) {
+        tree->left = insert(tree->left, key, value);
+        tree->left->father = tree;
+        return tree;
+    } else if (key > tree->key) {
+        tree->right = insert(tree->right, key, value);
+        tree->right->father = tree;
+        return tree;
+    }
+}
 
 /**
  ** Caso 0
@@ -47,26 +67,6 @@ Node *create() {
  *          Realizar rotação da subárvore para a esquerda
  * 
  */
-
-Node *insert(Node *tree, int key, int value) {
-    if (tree == NULL) {
-        Node *newTree = (Node *) malloc(sizeof(Node));
-        newTree->key = key;
-        newTree->content = value;
-        newTree->father = NULL;
-        newTree->left = NULL;   
-        newTree->right = NULL;
-        return newTree;
-    } else if (key < tree->key) {
-        tree->left = insert(tree->left, key, value);
-        tree->left->father = tree;
-        return tree;
-    } else if (key > tree->key) {
-        tree->right = insert(tree->right, key, value);
-        tree->right->father = tree;
-        return tree;
-    }
-}
 
 Node *insertAVL(Node *node, int key, int value, int *heightIncreased) {
     if (node == NULL) {
@@ -201,7 +201,6 @@ Node *insertAVL(Node *node, int key, int value, int *heightIncreased) {
         // Se o balanceamento da nova raiz era 1, então significa que o bal da subárvore da direita fica 0 e o bal da subárvore da esquerda fica -1
         // Se o balanceamento da nova raiz era -1, então significa que o bal da subárvore da direita fica 1 e o bal da subárvore da esquerda fica 0
 
-// * Se removeu da esquerda e o balanceamento da raiz era -1, então não houve diminuição da tamanho e o bal da raiz e das subárvores ficam 0
 // Se removeu da esquerda e o balanceamento da raiz era -1, então houve diminuição da tamanho e o bal da raiz e das subárvores ficam 0
 // Se removeu da esquerda o balanceamento da raiz era 1, houve diminuição da tamanho, então:
     // Se o bal da subárvore da direita da raiz é 1, então faz rotação para esquerda. O bal da nova raiz fica sendo 0 e o bal da subárvore da esquerda fica 0
@@ -209,10 +208,6 @@ Node *insertAVL(Node *node, int key, int value, int *heightIncreased) {
         // Se o bal da nova raiz é 0, então significa que Z não possuia sub árvores. O bal das subárvores da nova raiz ficam sendo 0
         // Se o bal da nova raiz é 1, então significa que Z tinha b2. O bal da subárvore da direita fica sendo 0 e o bal da subárvore da esquerda fica sendo -1
         // Se o bal da nova raiz é -1, então significa que Z tinha b1. O bal da subárvore da direita fica sendo 1 e o bal da subárvore da esquerda fica sendo 0 
-
-// Se removeu nó com 1 filho, então retorna que a altura diminuiu
-    // Se o bal da raiz é 1 e removeu nó com 1 filho da direita, então retorna que a altura não diminuiu e o bal da raiz fica sendo 0
-    // Se o bal da raiz é -1 e removeu nó com 1 filho da esquerda, então retorna que a altura não diminuiu e o bal da raiz fica sendo 0
 
 // Se removeu nó com 2 filhos
 Node *removeFromTree(Node **tree, int key, int *heightDecreased) {
@@ -347,14 +342,15 @@ Node *removeFromTree(Node **tree, int key, int *heightDecreased) {
             // e copia para um nó auxiliar
             Node aux = *getNodeHighestValue((*tree)->left);
             // Precisamos guardar o valor do balanceamento da árvore atual antes que ele seja atualizado pela função de remover
-            int balCurrentTree = (*tree)->bal;
+            int balTreeBeforeUpdate = (*tree)->bal;
             // Aqui, como passamos o nó atual para a função de remover, ele já estará com o balanceamento atualizado
+            // (Aqui estaremos removendo o nó da subárvore da esquerda com a maior chave)
             (*tree) = removeFromTree(&(*tree), aux.key, heightDecreased);
             
-            // Se o nó anterior da raiz era 1 e removemos da esquerda, então o algoritmo realizará uma rotação para a esquerda.
-            // Ou uma rotação direita esquerda.
+            // Se o nó anterior da raiz era 1 e removemos da esquerda, então o algoritmo realizará uma rotação para a esquerda
+            // ou uma rotação direita esquerda.
             // E a raiz que precisaremos atualizar agora estará no lado esquerdo da nova raiz atualizada pela rotação. 
-            if (balCurrentTree == 1) {
+            if (balTreeBeforeUpdate == 1) {
                 (*tree)->left->key = aux.key;
                 (*tree)->left->content = aux.content;
                 *heightDecreased = 1;
@@ -362,7 +358,7 @@ Node *removeFromTree(Node **tree, int key, int *heightDecreased) {
             // Se o nó raiz tinha balanceamento 0, como não será feito nenhuma rotação pelo algoritmo, então o bal será 1 pois removemos 
             // da esquerda. Além disso, a raiz atual continuar a mesma e então iremos atualizar sua chave e valor para a do maior nó
             // da sua subárvore esquerda
-            else if (balCurrentTree == 0) {
+            else if (balTreeBeforeUpdate == 0) {
                 (*tree)->key = aux.key;
                 (*tree)->content = aux.content;
                 *heightDecreased = 0;
@@ -370,7 +366,7 @@ Node *removeFromTree(Node **tree, int key, int *heightDecreased) {
             // Se o nó da raiz tinha balanceamento -1, então a altura da árvore diminuiu e o pai da raiz atual precisará ser avisado
             // A raiz atual continua sendo a mesma e sua chave e conteúdo será atualizado com os valores do 
             // nó de maior chave da subárvore da esquerda
-            else if (balCurrentTree == -1) {
+            else if (balTreeBeforeUpdate == -1) {
                 (*tree)->key = aux.key;
                 (*tree)->content = aux.content;
                 *heightDecreased = 1;

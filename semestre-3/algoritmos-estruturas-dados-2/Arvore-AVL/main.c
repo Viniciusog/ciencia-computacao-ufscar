@@ -217,8 +217,8 @@ int main() {
     }
     
     
-    removeFromTree(&tree, 30, &heightDecreased);
-    printf("\n\nAPÓS REMOVER o 30\n");
+    removeFromTree(&tree, 24, &heightDecreased);
+    printf("\n\nAPÓS REMOVER o 24\n");
     inOrder(tree);
     printf("\nBal da raiz: %d", tree->bal);
     printf("\nChave raiz: %d", tree->key);
