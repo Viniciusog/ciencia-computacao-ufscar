@@ -1,3 +1,9 @@
+/**
+ * Vinícius Guimarães
+ * Ciência da Computação - UFSCar
+ * 2022
+ */
+
 typedef struct node Node;
 
 Node *create();

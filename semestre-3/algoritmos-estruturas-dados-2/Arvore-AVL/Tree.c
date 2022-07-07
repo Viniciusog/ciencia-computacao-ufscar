@@ -1,6 +1,11 @@
+/**
+ * Vinícius Guimarães
+ * Ciência da Computação - UFSCar
+ * 2022
+ */
+
 #include <stdlib.h>
 #include <stdio.h>
-
 #include "Tree.h"
 
 typedef struct node {
@@ -12,6 +17,7 @@ typedef struct node {
     Node *father;
 } Node;
 
+// Cria a árvore AVL
 Node *create() {
     return NULL;
 }
@@ -347,8 +353,8 @@ Node *removeFromTree(Node **tree, int key, int *heightDecreased) {
             // (Aqui estaremos removendo o nó da subárvore da esquerda com a maior chave)
             (*tree) = removeFromTree(&(*tree), aux.key, heightDecreased);
             
-            // Se o nó anterior da raiz era 1 e removemos da esquerda, então o algoritmo realizará uma rotação para a esquerda
-            // ou uma rotação direita esquerda.
+            // Se o nó anterior da raiz era 1 e removemos da esquerda, então 
+            // o algoritmo realizará uma rotação para a esquerda ou uma rotação direita esquerda.
             // E a raiz que precisaremos atualizar agora estará no lado esquerdo da nova raiz atualizada pela rotação. 
             if (balTreeBeforeUpdate == 1) {
                 (*tree)->left->key = aux.key;
@@ -356,7 +362,7 @@ Node *removeFromTree(Node **tree, int key, int *heightDecreased) {
                 *heightDecreased = 1;
             } 
             // Se o nó raiz tinha balanceamento 0, como não será feito nenhuma rotação pelo algoritmo, então o bal será 1 pois removemos 
-            // da esquerda. Além disso, a raiz atual continuar a mesma e então iremos atualizar sua chave e valor para a do maior nó
+            // da esquerda. Além disso, a raiz atual continua a mesma e então iremos atualizar sua chave e valor para a do maior nó
             // da sua subárvore esquerda
             else if (balTreeBeforeUpdate == 0) {
                 (*tree)->key = aux.key;
