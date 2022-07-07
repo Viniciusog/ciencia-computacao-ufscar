@@ -68,6 +68,198 @@ Node *insert(Node *tree, int key, int value) {
     }
 }
 
+// Se removeu da direita e o balanceamento da raiz era zero, retorna que não houve diminuição do tamanho, então bal da raiz fica -1. Diminuição fica false
+// Se removeu da esquerda e o balanceamento da raiz era zero, retorna que não houve diminuição do tamanho, então bal da raiz fica 1. Diminuição fica false
+
+// Se removeu da direita e o balanceamento da raiz era 1, então não há mais diminuição de tamanho e o bal da raiz e das subárvores ficam 0
+// Se removeu da direita e o balanceamento da raiz -1 e houve diminuição de tamanho, então:
+    // Se o bal da sub árvore da esquerda é -1, então realiza rotação para direita, a subárvore da direita da nova raiz fica com bal = 0 e a raiz também fica com bal = 0
+    // Se o bal da subárvore da esquerda é 1, então realiza rotação dupla esquerda direita. 
+        // Se o balanceamento da nova raiz é/era 0, então significa que tinha apenas Z. Logo, o bal das subárvores ficam 0
+        // Se o balanceamento da nova raiz era 1, então significa que o bal da subárvore da direita fica 0 e o bal da subárvore da esquerda fica -1
+        // Se o balanceamento da nova raiz era -1, então significa que o bal da subárvore da direita fica 1 e o bal da subárvore da esquerda fica 0
+
+// * Se removeu da esquerda e o balanceamento da raiz era -1, então não houve diminuição da tamanho e o bal da raiz e das subárvores ficam 0
+// Se removeu da esquerda e o balanceamento da raiz era -1, então houve diminuição da tamanho e o bal da raiz e das subárvores ficam 0
+// Se removeu da esquerda o balanceamento da raiz era 1, houve diminuição da tamanho, então:
+    // Se o bal da subárvore da direita da raiz é 1, então faz rotação para esquerda. O bal da nova raiz fica sendo 0 e o bal da subárvore da esquerda fica 0
+    // Se o bal da subárvore da direita da raiz é -1, então faz rotação direita esquerda. 
+        // Se o bal da nova raiz é 0, então significa que Z não possuia sub árvores. O bal das subárvores da nova raiz ficam sendo 0
+        // Se o bal da nova raiz é 1, então significa que Z tinha b2. O bal da subárvore da direita fica sendo 0 e o bal da subárvore da esquerda fica sendo -1
+        // Se o bal da nova raiz é -1, então significa que Z tinha b1. O bal da subárvore da direita fica sendo 1 e o bal da subárvore da esquerda fica sendo 0 
+
+// Se removeu nó com 1 filho, então retorna que a altura diminuiu
+    // Se o bal da raiz é 1 e removeu nó com 1 filho da direita, então retorna que a altura não diminuiu e o bal da raiz fica sendo 0
+    // Se o bal da raiz é -1 e removeu nó com 1 filho da esquerda, então retorna que a altura não diminuiu e o bal da raiz fica sendo 0
+
+// Se removeu nó com 2 filhos
+Node *removeFromTree(Node **tree, int key, int *heightDecreased) {
+    if ((*tree) == NULL) {
+        return NULL;
+    } 
+    // Se removeu da esquerda
+    else if (key < (*tree)->key) {
+        (*tree)->left = removeFromTree(&(*tree)->left, key, heightDecreased);
+
+        // Se a altura diminuiu
+        if ((*heightDecreased)) {
+
+            if ((*tree)->bal == 0) {
+                (*tree)->bal = 1;
+                *heightDecreased = 0;
+            }
+            else if ((*tree)->bal == -1) {
+                (*tree)->bal = 0;
+                *heightDecreased = 1;
+            }
+            else if ((*tree)->bal == 1) {
+                // Fazer rotação para a esquerda
+                if ((*tree)->right->bal == 1) {
+                    (*tree) = leftRotation((*tree));
+                    (*tree)->left->bal = 0;
+                    (*tree)->bal = 0; // colocar isso em baixo 
+                }
+                // Fazer rotação dupla direita esquerda
+                else if ((*tree)->right->bal == -1) {
+                    (*tree) = rightLeftRotation((*tree));
+
+                    // Significa que Z não possuía subárvores
+                    if ((*tree)->bal == 0) {
+                        (*tree)->left->bal = 0;
+                        (*tree)->right->bal = 0;
+                    }
+                    // Significa que Z possuía subárvore na direita
+                    else if ((*tree)->bal == 1) {
+                        (*tree)->bal = 0;
+                        (*tree)->left->bal = -1;
+                        (*tree)->right->bal = 0;
+                    }
+                    //Significa que Z possuía subárvore na esquerda
+                    else if ((*tree)->bal == -1) {
+                        (*tree)->bal = 0;
+                        (*tree)->left->bal = 0;
+                        (*tree)->right->bal = 1;
+                    }
+                }
+                (*tree)->bal = 0;
+                *heightDecreased = 0;
+            }
+        }
+    } 
+    // Se removeu da direita
+    else if (key > (*tree)->key) {
+        (*tree)->right = removeFromTree(&(*tree)->right, key, heightDecreased);
+
+        // Se a altura diminuiu
+        if (*heightDecreased) {
+            if ((*tree)->bal == 0) {
+                (*tree)->bal = -1;
+                *heightDecreased = 0;
+            }
+            else if ((*tree)->bal == 1) {
+                (*tree)->bal = 0;
+                *heightDecreased = 1;
+            }
+            else if ((*tree)->bal == -1) {
+                // Realizar rotação para direita
+                if ((*tree)->left->bal == -1) {
+                    (*tree) = rightRotation((*tree));
+                    (*tree)->right->bal = 0;
+                    (*tree)->bal = 0;
+                }
+                // Realizar rotação dupla esquerda direita
+                else if ((*tree)->left->bal == 1) {
+                    (*tree) = leftRightRotation((*tree));
+
+                    // Significa que a subárvore Z não tinha subárvores
+                    if ((*tree)->bal == 0) {
+                        (*tree)->bal = 0;
+                        (*tree)->left->bal = 0;
+                        (*tree)->right->bal = 0;  
+                    } 
+                    // Significa que a subárvore Z tinha a subárvore B2
+                    else if ((*tree)->bal == 1) {
+                        (*tree)->bal = 0;
+                        (*tree)->right->bal = 0;
+                        (*tree)->left->bal = -1;
+                    } 
+                    // Significa que a subárvore Z tinha a subárvore B1
+                    else if ((*tree)->bal == -1) {
+                        (*tree)->bal = 0;
+                        (*tree)->left->bal = 0;
+                        (*tree)->right->bal = 1;
+                    }
+                    (*tree)->bal = 0;
+                    *heightDecreased = 0;
+                }
+            }
+        }
+    } 
+    // Encontrou o nó
+    else {
+        // Sem filhos
+        if ((*tree)->left == NULL && (*tree)->right == NULL) {
+            free((*tree));
+            *heightDecreased = 1;
+            return NULL;
+        }
+        // Se tem filho na esquerda
+        else if ((*tree)->right == NULL) {
+            Node *leftChild = (*tree)->left;
+            leftChild->father = (*tree)->father;
+            free((*tree));
+            *heightDecreased = 1;
+            return leftChild;
+        }
+        // Se tem filho na direita
+        else if ((*tree)->left == NULL) {
+            Node *rightChild = (*tree)->right;
+            rightChild->father = (*tree)->father;
+            free((*tree));
+            *heightDecreased = 1;
+            return rightChild;
+        }
+        // Se tem dois filhos
+        else {
+            // Pega o valor do nó da subárvore da esquerda que contém o maior valor (maior chave)
+            // e copia para um nó auxiliar
+            Node aux = *getNodeHighestValue((*tree)->left);
+            // Precisamos guardar o valor do balanceamento da árvore atual antes que ele seja atualizado pela função de remover
+            int balCurrentTree = (*tree)->bal;
+            // Aqui, como passamos o nó atual para a função de remover, ele já estará com o balanceamento atualizado
+            (*tree) = removeFromTree(&(*tree), aux.key, heightDecreased);
+            
+            // Se o nó anterior da raiz era 1 e removemos da esquerda, então o algoritmo realizará uma rotação para a esquerda.
+            // Ou uma rotação direita esquerda.
+            // E a raiz que precisaremos atualizar agora estará no lado esquerdo da nova raiz atualizada pela rotação. 
+            if (balCurrentTree == 1) {
+                (*tree)->left->key = aux.key;
+                (*tree)->left->content = aux.content;
+                *heightDecreased = 1;
+            } 
+            // Se o nó raiz tinha balanceamento 0, como não será feito nenhuma rotação pelo algoritmo, então o bal será 1 pois removemos 
+            // da esquerda. Além disso, a raiz atual continuar a mesma e então iremos atualizar sua chave e valor para a do maior nó
+            // da sua subárvore esquerda
+            else if (balCurrentTree == 0) {
+                (*tree)->key = aux.key;
+                (*tree)->content = aux.content;
+                *heightDecreased = 0;
+            }
+            // Se o nó da raiz tinha balanceamento -1, então a altura da árvore diminuiu e o pai da raiz atual precisará ser avisado
+            // A raiz atual continua sendo a mesma e sua chave e conteúdo será atualizado com os valores do 
+            // nó de maior chave da subárvore da esquerda
+            else if (balCurrentTree == -1) {
+                (*tree)->key = aux.key;
+                (*tree)->content = aux.content;
+                *heightDecreased = 1;
+            }
+        }
+    }
+    return (*tree);
+}
+
+
+/*
 Node *removeFromTree(Node **tree, int key) {
     if ((*tree) == NULL) {
         return (*tree);
@@ -121,7 +313,7 @@ Node *removeFromTree(Node **tree, int key) {
         // if node has 1 child in the left
         // if node has 1 child in the right 
         // if node has 2 childs
-}
+}*/
 
 Node *newNode() {
     Node *new = (Node *) malloc(sizeof(Node));

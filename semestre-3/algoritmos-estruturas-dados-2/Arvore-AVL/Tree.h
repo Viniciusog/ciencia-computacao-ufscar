@@ -3,7 +3,7 @@ typedef struct node Node;
 Node *create();
 Node *insert(Node *tree, int key, int valor);
 Node *insertAVL(Node *tree, int key, int valor, int *heightIncreased);
-Node *removeFromTree(Node **tree, int valor);
+Node *removeFromTree(Node **tree, int valor, int *heightDecreased);
 void inOrder(Node *tree);
 void print(Node *tree);
 Node *getNodeHighestValue(Node *tree);
