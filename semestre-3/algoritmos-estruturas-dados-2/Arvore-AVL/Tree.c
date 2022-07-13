@@ -43,6 +43,17 @@ Node *insert(Node *tree, int key, int value) {
     }
 }
 
+int getHeight(Node *tree) {
+    if (tree == NULL) {
+        return -1;
+    }
+
+    int leftHeight = getHeight(tree->left) + 1;
+    int rightHeight = getHeight(tree->right) + 1;
+
+    return leftHeight >= rightHeight ? leftHeight : rightHeight; 
+}
+
 /**
  ** Caso 0
  *      Se a altura da subárvore não aumentou, então devolve que não houve um aumento da altura
@@ -144,6 +155,15 @@ Node *insertAVL(Node *node, int key, int value, int *heightIncreased) {
                 // Mesmo depois de realizar todos os processos de rotações, a altura da árvore não terá aumentado
                 *heightIncreased = 0;
             }
+
+            int leftHeight = getHeight(node->left);
+            int rightHeight = getHeight(node->right);
+
+            if ((rightHeight - leftHeight) != node->bal) {
+              printf("Erro inserção esquerda! Bal: %d, Altura D: %d, Altura E: %d\n", node->bal, rightHeight, leftHeight);
+            } else {
+              printf("\nAltura correta inserção esquerda.\n");
+            }
         }
     } 
     // Inseriu na subárvore da direita
@@ -189,6 +209,14 @@ Node *insertAVL(Node *node, int key, int value, int *heightIncreased) {
                 }
                 node->bal = 0;
                 *heightIncreased = 0;
+            }
+
+            int leftHeight = getHeight(node->left);
+            int rightHeight = getHeight(node->right);
+            if ((rightHeight - leftHeight) != node->bal) {
+              printf("Erro inserção direita! Bal: %d, Altura D: %d, Altura E: %d\n", node->bal, rightHeight, leftHeight);
+            } else {
+              printf("\nAltura correta inserção direita.\n");
             }
         }
     }
@@ -267,6 +295,14 @@ Node *removeFromTree(Node **tree, int key, int *heightDecreased) {
                 (*tree)->bal = 0;
                 *heightDecreased = 0;
             }
+
+            int leftHeight = getHeight((*tree)->left);
+            int rightHeight = getHeight((*tree)->right);
+            if ((rightHeight - leftHeight) != (*tree)->bal) {
+              printf("Erro remoção esquerda! Bal: %d, Altura D: %d, Altura E: %d\n", (*tree)->bal, rightHeight, leftHeight);
+            } else {
+              printf("\nAltura correta remoção esquerda.\n");
+            }
         }
     } 
     // Se removeu da direita
@@ -315,6 +351,13 @@ Node *removeFromTree(Node **tree, int key, int *heightDecreased) {
                     (*tree)->bal = 0;
                     *heightDecreased = 0;
                 }
+            }
+            int leftHeight = getHeight((*tree)->left);
+            int rightHeight = getHeight((*tree)->right);
+            if ((rightHeight - leftHeight) != (*tree)->bal) {
+              printf("Erro remoção direita! Bal: %d, Altura D: %d, Altura E: %d\n", (*tree)->bal, rightHeight, leftHeight);
+            } else {
+              printf("\nAltura correta remoção direita.\n");
             }
         }
     } 
@@ -444,3 +487,4 @@ void print(Node *tree) {
     print(tree->right);
     printf("%d ", tree->key);
 }
+

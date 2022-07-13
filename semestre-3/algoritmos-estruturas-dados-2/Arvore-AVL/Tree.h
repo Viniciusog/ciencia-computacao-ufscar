@@ -18,3 +18,4 @@ Node *rightRotation(Node *tree);
 Node *leftRotation(Node *tree);
 Node *leftRightRotation(Node *tree);
 Node *rightLeftRotation(Node *tree);
+int getHeight(Node *tree);
