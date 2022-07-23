@@ -14,7 +14,7 @@ typedef struct node {
     int content;
     Node *left;
     Node *right;
-    Node *father;
+    Node *parent;
 } Node;
 
 // Cria a árvore AVL
@@ -28,17 +28,17 @@ Node *insert(Node *tree, int key, int value) {
         Node *newTree = (Node *) malloc(sizeof(Node));
         newTree->key = key;
         newTree->content = value;
-        newTree->father = NULL;
+        newTree->parent = NULL;
         newTree->left = NULL;   
         newTree->right = NULL;
         return newTree;
     } else if (key < tree->key) {
         tree->left = insert(tree->left, key, value);
-        tree->left->father = tree;
+        tree->left->parent = tree;
         return tree;
     } else if (key > tree->key) {
         tree->right = insert(tree->right, key, value);
-        tree->right->father = tree;
+        tree->right->parent = tree;
         return tree;
     }
 }
@@ -97,7 +97,7 @@ Node *insertAVL(Node *node, int key, int value, int *heightIncreased) {
     // inserção na esquerda
     else if (key <= node->key) {
         node->left = insertAVL(node->left, key, value, heightIncreased);
-        node->left->father = node;
+        node->left->parent = node;
         
         if (*heightIncreased == 1) {
             // Caso 2: se inseriu na menor subárvore
@@ -169,7 +169,7 @@ Node *insertAVL(Node *node, int key, int value, int *heightIncreased) {
     // Inseriu na subárvore da direita
     else {
         node->right = insertAVL(node->right, key, value, heightIncreased);
-        node->right->father = node;
+        node->right->parent = node;
 
         if (*heightIncreased) {
             // Inseriu na menor subárvore
@@ -372,7 +372,7 @@ Node *removeFromTree(Node **tree, int key, int *heightDecreased) {
         // Se tem filho na esquerda
         else if ((*tree)->right == NULL) {
             Node *leftChild = (*tree)->left;
-            leftChild->father = (*tree)->father;
+            leftChild->parent = (*tree)->parent;
             free((*tree));
             *heightDecreased = 1;
             return leftChild;
@@ -380,7 +380,7 @@ Node *removeFromTree(Node **tree, int key, int *heightDecreased) {
         // Se tem filho na direita
         else if ((*tree)->left == NULL) {
             Node *rightChild = (*tree)->right;
-            rightChild->father = (*tree)->father;
+            rightChild->parent = (*tree)->parent;
             free((*tree));
             *heightDecreased = 1;
             return rightChild;
@@ -428,7 +428,7 @@ Node *removeFromTree(Node **tree, int key, int *heightDecreased) {
 Node *newNode() {
     Node *new = (Node *) malloc(sizeof(Node));
     new->bal = 0;
-    new->father = NULL;
+    new->parent = NULL;
     new->left = NULL;
     new->right = NULL;
     return new;
@@ -444,18 +444,18 @@ Node *getNodeHighestValue(Node *tree) {
 Node *rightRotation(Node *tree) {
     Node *aux = tree->left;
     tree->left = aux->right;
-    if (aux->right != NULL) aux->right->father = tree;
+    if (aux->right != NULL) aux->right->parent = tree;
     aux->right = tree;
-    tree->father = aux;
+    tree->parent = aux;
     return aux;
 }
 
 Node *leftRotation(Node *tree) {
     Node *aux = tree->right;
     tree->right = aux->left;
-    if (aux->left != NULL) aux->left->father = tree;
+    if (aux->left != NULL) aux->left->parent = tree;
     aux->left = tree;
-    tree->father = aux;
+    tree->parent = aux;
     return aux;
 }
 
