@@ -21,3 +21,4 @@ void insertIncompleteNode(Node *node, int value);
 void insert(BTree *tree, int value);
 void divideChild(Node *parent, int position, Node *child);
 void print(Node *node);
+Node *findKey(Node *node, int key, int *position);

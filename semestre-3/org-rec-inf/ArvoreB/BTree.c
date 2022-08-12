@@ -155,3 +155,33 @@ void print(Node *node) {
         print(node->pointers[node->size]);
     }
 }
+
+Node *findKey(Node *node, int key, int *position) {
+    int index  = 0;
+    while (index < node->size && node->keys[index] < key) {
+        index++;
+    }
+
+    if (index == node->size) {
+        if (node->isLeaf) {
+            return NULL;
+        } 
+        // Se não for folha, então precisaremos buscar no nó apontado pelo último ponteiro
+        else {
+            return findKey(node->pointers[index], key, position);
+        }
+    } else if (node->keys[index] == key) {
+        *position = index;
+        return node;
+    } 
+    // Se não for igual à chave e o índice for menor do que node->size, então a chave na posição atual
+    // será maior do que a chave que estamos procurando
+    else {
+        if (node->isLeaf) {
+            // Se é folha, não há mais nós para percorrer e portanto, a chave buscada não está na árvore
+            return NULL;
+        } else {
+            return findKey(node->pointers[index], key, position);
+        }
+    }
+}
