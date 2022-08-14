@@ -10,7 +10,7 @@ typedef struct node {
     struct node **pointers;
 } Node;
 
-typedef struct tresde {
+typedef struct btree {
     Node *root;
 } BTree;
 
@@ -22,3 +22,8 @@ void insert(BTree *tree, int value);
 void divideChild(Node *parent, int position, Node *child);
 void print(Node *node);
 Node *findKey(Node *node, int key, int *position);
+//int remove(Node *node, int key);
+int removeWrapper(Node *node, int key);
+int removeNode(Node *parent, int position, Node *subNode, int key);
+Node *getMaxKeyIfPossible(Node *node, int *position, int *success);
+Node *getMinKeyIfPossible(Node *node, int *position, int *success);
