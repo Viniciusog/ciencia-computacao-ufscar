@@ -214,7 +214,23 @@ int removeWrapper(Node *node, int key) {
         } else {
             // Se tivermos que remover de um sub nó
             // precisamos após remover do sub nó, verificar se ele continua mantendo o tamanho > T - 1
-            return removeNode(node, index, node->pointers[index], key);
+            int success = removeNode(node, index, node->pointers[index], key);
+            if (node->pointers[index]->size < T - 1) { 
+                // todo: criar função para pegar elemento emprestado de nós internos,
+                // todo: ou seja, realizar rotação direita e esquerda com nós internos
+                // todo: lembrar de controlar os ponteiros
+                // Teremos que arrumar o nó para ter pelo menos T - 1 elementos
+                if (index == 0 && node->pointers[index + 1]->size > T - 1) {
+                    // pegar emprestado do nó na direita
+                } else if (index == 0 && node->pointers[index + 1]->size <= T - 1) {
+                    // realizar merge do nó da direita no nó atual
+                } else if (index == 2*T && node->pointers[index - 1]->size > T - 1) {
+                    // pegar emprestado do nó na esquerda
+                } else if (index == 2*T && node->pointers[index - 1]->size <= T - 1) {
+                    // realizar merge do nó atual no nó da esquerda
+                }
+            }
+            return success;
         }
     }
 }
@@ -251,7 +267,7 @@ int removeNode(Node *parent, int position, Node *node, int key) {
                     // que irá precisar nos corrigir caso após o merge ficarmos com size <= T - 1
                     return removeNode(parent, position, node, key);
                 }
-            } else if (position = 2*T - 1) {
+            } else if (position = 2*T) {
                 // verificar apenas na esquerda
                 Node *leftBrother = parent->pointers[position - 1];
 
@@ -286,16 +302,19 @@ int removeNode(Node *parent, int position, Node *node, int key) {
                 }
             }
         } else if (!node->isLeaf && node->size > T - 1) {
-
+            // todo: verificar a remoção de nó interno com size > T - 1
 
         } else if (!node->isLeaf && node->size <= T - 1) {
-
+            // todo: vai ter que fazer aqueles processos de rotação ou merge com nós internos
         }
     } else {
         if (node->isLeaf) {
             return 0;
         } else {
-            return removeNode(node, index, node->pointers[index], key);
+            int sucess = removeNode(node, index, node->pointers[index], key);
+            // todo: fazer a verificação se o nó alterado (node->pointers[index]) continua com tamanho > T-1
+            // todo: sem não tiver size > T - 1, então precisa realizar as configurações para arrumar
+            return sucess;
             // obs, ao retornar da remoção, precisamos verificar se o nó continuar tendo tamanho maior do que
             // T - 1, e se não tiver, precisaremos arrumar a estrutura.
 
@@ -368,12 +387,65 @@ void rightRotationLeaf(Node *parent, int position, Node *node) {
 
 void mergeInternalNode(Node *parent, int position, Node *node, int withLeftNode) {
     if (withLeftNode) {
+        Node *leftBrother = parent->pointers[position - 1];
 
+        int keyFromParent = parent->keys[position];
+        leftBrother->keys[leftBrother->size] = keyFromParent;
+        leftBrother->size++;
+
+        // passar as chaves do nó para o irmão da esquerda
+        for (int i = 0; i < node->size; i++) {
+            leftBrother->keys[leftBrother->size + i] = node->keys[i];
+        }
+
+        // passar os ponteiros do nó para o irmão da esquerda
+        for (int i = 0; i <= node->size; i++) {
+            leftBrother->pointers[leftBrother->size + i] = node->pointers[i];
+        }
+
+        leftBrother->size += node->size;
+        node->size = 0;
+
+        // arrumar as chaves do pai, começa em position - 1, pois realizamos o merge no nó da esquerda
+        for (int i = position - 1; i < parent->size - 1; i++) {
+            parent->keys[i] = parent->keys[i + 1];
+        }
+
+        // arrumar ponteiros do pai
+        for (int i = position; i < parent->size; i++) {
+            parent->pointers[i] = parent->pointers[i + 1];
+        }
+        parent->size--;
     } else {
         // merge com o nó da direita
         Node *rightBrother = parent->pointers[position + 1];
-        
+        int keyFromParent = parent->keys[position];
 
+        node->keys[node->size] = keyFromParent;
+        node->size++;
+
+        // passa as chaves do nó da direita para o nosso nó
+        for (int i = 0; i < rightBrother->size; i++) {
+            node->keys[node->size + i] = rightBrother->keys[i];
+        }
+
+        // passa os ponteiros do nó da direita para o nosso nó
+        for (int i = 0; i <= rightBrother->size; i++) {
+            node->pointers[node->size + i] = rightBrother->keys[i];
+        }
+        node->size+= rightBrother->size;
+        rightBrother->size = 0;
+        
+        // arrumar as chaves do pai
+        for (int i = position; i < parent->size - 1; i++) {
+            parent->keys[i] = parent->keys[i + 1];
+        }
+
+        // arrumar os ponteiros do pai;
+        for (int i = position + 1; i < parent->size; i++) {
+            parent->pointers[i] = parent->pointers[i + 1];
+        }
+        parent->size--;
     }
 }
 
