@@ -40,33 +40,16 @@ int main() {
 
     printf("\n");
     print(bTree->root);
-    printf("\nroot size before trying to remove 5: %d\n", bTree->root->size);
-    printf("\n");
-    removeWrapper(&bTree->root, 5);
-    printf("\nroot size after trying to remove 5: %d\n", bTree->root->size);
+    printf("\nTamanho da raiz antes de tentar remover a chave 5: %d\n", bTree->root->size);
+    int success = removeWrapper(&bTree->root, 5);
+    printf("Suceso ao tentar remover a chave 5? %d\n", success);
+    printf("Tamanho da raiz depois de tentar remover a chave 5: %d\n", bTree->root->size);
     print(bTree->root);
+    printf("\n\n");
 
-    int success = removeWrapper(&bTree->root, 11);
+    printf("Tentando remover a chave 11...\n");
+    success = removeWrapper(&bTree->root, 11);
     printf("Sucesso ao tentar remover 11? %d\n", success);
 
     print(bTree->root);
-
-
-    /* 
-    printf("size root before deleting 8: %d\n", bTree->root->size);
-    removeWrapper(&bTree->root, 8);
-    printf("\n");
-    print(bTree->root);
-    printf("\n");
-    printf("size root after deleting 8: %d\n", bTree->root->size);
-
-    removeWrapper(&bTree->root, 3);
-    printf("\n");
-    print(bTree->root);
-    printf("\n");
-    
-    removeWrapper(&bTree->root, 3);
-    printf("\n");
-    print(bTree->root);
-    printf("\n"); */
 }
