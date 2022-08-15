@@ -1,6 +1,6 @@
 /**
  * @file BTree.c
- * @author Vinícius Guimarães (Github: viniciusog)
+ * @author Vinícius O. Guimarães (Github: viniciusog)
  * @brief B-Tree implementation with int key
  * @version 0.1
  * @date 2022-08-15
