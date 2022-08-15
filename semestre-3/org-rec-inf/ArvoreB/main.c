@@ -30,27 +30,26 @@ int main() {
     insert(bTree, 1);
     insert(bTree, 1);
 
-    bTree->root->pointers[bTree->root->size]->size = 0;
+    printf("\n");
+    print(bTree->root);
+    printf("\n");
+    removeWrapper(&bTree->root, 10);
+    print(bTree->root);
 
-    int success;
-    Node *keyNode = getMaxKeyIfPossible(bTree->root, &position, &success);
+    removeWrapper(&bTree->root, 8);
+    printf("\n");
+    print(bTree->root);
+    printf("\n");
 
-    if (success) {
-        printf("\nSucesso! Podemos pegar a maior chave na posição: %d e endereço do nó %p\nTamanho do nó em que a chave está: %d",
-         position, keyNode, keyNode->size);
-    } else {
-        printf("\nSem sucesso! Não podemos pegar a maior chave na posição: %d\n",
-         position);
-    }
-
-    keyNode = getMinKeyIfPossible(bTree->root, &position, &success);
-    if (success) {
-        printf("\nSucesso! Podemos pegar a menor chave na posição: %d, chave: %d\nTamanho do nó em que a chave está: %d",
-         position, keyNode->keys[position], keyNode->size);
-    } else {
-        printf("\nSem sucesso! Não podemos pegar a maior chave na posição: %d. Chave: %d\n",
-         position, keyNode->keys[position]);
-    }
+    removeWrapper(&bTree->root, 3);
+    printf("\n");
+    print(bTree->root);
+    printf("\n");
+    
+    removeWrapper(&bTree->root, 3);
+    printf("\n");
+    print(bTree->root);
+    printf("\n");
 
 
 }

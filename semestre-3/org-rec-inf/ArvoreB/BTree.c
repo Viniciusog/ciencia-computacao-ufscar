@@ -198,14 +198,16 @@ Node *findKey(Node *node, int key, int *position) {
     // sub nó da direita
 // se a chave estiver em nó interno e o nó tiver size > T-1, 
 
-int removeWrapper(Node *node, int key) {
-    int index;
+int removeWrapper(Node **myNode, int key) {
+    Node *node = *myNode;
+    int index = 0;
     while (index < node->size && node->keys[index] < key) {
         index++;
     }
 
     if (node->isLeaf) {
-        if (node->keys[index] == key) {
+        printf("wrapper is leaf\n");
+        if (index < node->size && node->keys[index] == key) {
             // ajustar chaves
             for (int i = index; i < node->size - 1; i++) {
                 node->keys[i] = node->keys[i + 1];
@@ -215,315 +217,259 @@ int removeWrapper(Node *node, int key) {
             return 0;
         }
     } else {
-        if (node->keys[index] == key) {
+        printf("wrapper is internal node\n");
+        if (index < node->size && node->keys[index] == key) {
+            printf("index < node->size && node->keys[index] == key\n");
+            int successLeft = 0;
+            // pegar a maior chave da sub árvore da esquerda
+            if (node->pointers[index]->size > T-1) {
+                int pos;
+                int success;
+                Node *nodeWithKey = getMaxKeyIfPossible(node->pointers[index], &pos, &success);
+                if (success) {
+                    node->keys[index] = nodeWithKey->keys[pos];
+                    successLeft = 1;
+                    return removeNode(node, index, node->pointers[index], nodeWithKey->keys[pos]);
+                }
+            } 
+
+            int successRight = 0;
+            // pegar a menor chave da sub árvore da direita
+            if (node->pointers[index + 1]->size > T-1 && !successLeft) {
+                printf("node->pointers[index + 1]->size > T-1 && !successLeft\n");
+                int pos;
+                int success;
+                Node *nodeWithKey = getMinKeyIfPossible(node->pointers[index + 1], &pos, &success);
+                if (success) {
+                    node->keys[index] = nodeWithKey->keys[pos];
+                    successRight = 1;
+                    return removeNode(node, index + 1, node->pointers[index + 1], nodeWithKey->keys[pos]);
+                }
+            } 
+            
+            // Se não conseguir pegar nem a maior chave da sub árvore da esquerda e nem a menor chave da sub árvore da direita então
+            // iremos realizar o merge entre essas duas sub árvores
+            if (!successLeft && !successRight) {
+                printf("!successLeft && !successRight\n");
+                Node *leftNode = node->pointers[index];
+                Node *rigthNode = node->pointers[index + 1];
+                mergeNodeToLeft(node, index + 1, rigthNode);
+                return removeNode(node, index, leftNode, key);
+            }
             // pegar a maior chave da subárvore esquerda e colocar na posicao index
             // se não tiver como, tentar pegar a menor chave da subárvore da direita
             // se também não tiver como, então teremos que realizar o merge
 
         } else {
-            // Se tivermos que remover de um sub nó
-            // precisamos após remover do sub nó, verificar se ele continua mantendo o tamanho > T - 1
-            int success = removeNode(node, index, node->pointers[index], key);
-            if (node->pointers[index]->size < T - 1) { 
-                // todo: criar função para pegar elemento emprestado de nós internos,
-                // todo: ou seja, realizar rotação direita e esquerda com nós internos
-                // todo: lembrar de controlar os ponteiros
-                // todo: implementar o código abaixo para os casos e depois colocar dentro de uma função
-                // para ser utilizado em outra partes do código
-                
-                // Teremos que arrumar o nó para ter pelo menos T - 1 elementos
-                if (index == 0 && node->pointers[index + 1]->size > T - 1) {
-                    // pegar emprestado do nó na direita
-                } else if (index == 0 && node->pointers[index + 1]->size <= T - 1) {
-                    mergeInternalNode(node, index, node->pointers[index], 0);
-                    // realizar merge do nó da direita no nó atual
-                } else if (index == 2*T && node->pointers[index - 1]->size > T - 1) {
-                    // pegar emprestado do nó na esquerda
-                } else if (index == 2*T && node->pointers[index - 1]->size <= T - 1) {
-                    // realizar merge do nó atual no nó da esquerda
-                } else {
-                    // nó interno que contém irmão na esquerda e na direita
-                }
+            printf("index é igual ao size ou a chave na posição index é maior do que estamos procurando\n");
+            printf("Index wrapper: %d \n", index);
+            int success = removeNode(node, index, node->pointers[index], key);   
+            if (node->size == 0) {
+                printf("node->size == 0 Wrapper\n");
+                *myNode = node->pointers[0];
             }
+            printf("success wrapper: %d\n", success);
             return success;
         }
     }
 }
 
-int removeNode(Node *parent, int position, Node *node, int key) {
-    int index = 0 ;
-    while (index < node->size && node->keys[index] < key) {
-        index++;
+void borrowFromRight(Node *parent, int position, Node *node) {
+    Node *rightBrother = parent->pointers[position + 1];
+    node->keys[node->size] = parent->keys[position];
+    node->size++;
+    parent->keys[position] = rightBrother->keys[0];
+
+    // arrumar as chaves do irmão da direita
+    for (int i = 0; i < rightBrother->size - 1; i++) {
+        rightBrother->keys[i] = rightBrother->keys[i + 1];
     }
-    
-    if (node->keys[index] == key) {
-        if (node->isLeaf && node->size > T - 1) {
-            // remover normalmente
-            // tem que ser menor do que size - 1, pois se o nó estiver completamente cheio
-            // se for menor do que size, então na última posição estaríamos pegando da posicao [size] que não existe
-            for (int i = index; i < node->size - 1; i++) {
-                node->keys[i] = node->keys[i + 1];
-            }
-            node->size--;
-        } else if (node->isLeaf && node->size <= T - 1) {
-            if (position == 0) {
-                // verificar apenas na direita
-                Node * rightBrother = parent->pointers[position + 1];
 
-                if (rightBrother->size > T - 1) {
-                    leftRotationLeaf(parent, position, node);
-                    // mandar remover a chave apartir do nó atual
-                    // observe que será o nosso pai que deverá nos corrigir caso tivermos size <= T - 1
-                    return removeNode(parent, position, node, key);
-                } else {
-                    mergeLeaf(parent, position, node, 0);
-                    // em seguida, mandar remover a partir do nó atual, a chave que queremos
-                    // observe que ao retornar a remoção apartir do nosso nó atual, é o nosso pai
-                    // que irá precisar nos corrigir caso após o merge ficarmos com size <= T - 1
-                    return removeNode(parent, position, node, key);
-                }
-            } else if (position = 2*T) {
-                // verificar apenas na esquerda
-                Node *leftBrother = parent->pointers[position - 1];
+    // se o irmão da direita for nó interno, então iremos precisar pegar o ponteiro da posição 0 dele
+    // e colocar no nosso nó na posição size e em seguida arrumar os ponteiro do nó da direita
+    if (!rightBrother->isLeaf) {
+        node->pointers[node->size] = rightBrother->pointers[0];
 
-                if (leftBrother->size > T - 1) {
-                    rightRotationLeaf(parent, position, node);
-                    // correção caso tivermos size <= T - 1 será feita pelo nosso pai
-                    return removeNode(parent, position, node, key);
-                } else {
-                    mergeLeaf(parent, position, node, 1);
-                    // o nosso pai que terá que verificar se ainda continuamos com tamanho > T - 1 e realizar as
-                    // arrumações necessárias caso não tivermos com tamanho > T - 1
-                    return removeNode(parent, position, node, key);
-                }
-            } else {
-                // verifica se tem como pegar emprestado do irmão da direita ou da esquerda
-                // se não tiver como nenhuma das opções, então realizar o merge
-                Node *rightBrother = parent->pointers[position + 1];
-                Node *leftBrother = parent->pointers[position - 1];
-
-                if (rightBrother->size > T - 1) {
-                    leftRotationLeaf(parent, position, node);
-                    // nosso pai irá precisar verificar se continuamos a ter tamanho > T - 1
-                    return removeNode(parent, position, node, key);
-                } else if (leftBrother->size > T - 1) {
-                    rightRotationLeaf(parent, position, node);
-                    // nosso pai irá precisar verificar se continuamos a ter tamanho > T - 1
-                    return removeNode(parent, position, node, key);
-                } else {
-                    mergeLeaf(parent, position, node, 0);
-                    // nosso pai irá precisar verificar se continuamos a ter tamanho > T - 1
-                    return removeNode(parent, position, node, key);
-                }
-            }
-        } else if (!node->isLeaf && node->size > T - 1) {
-            Node *rightBrother = parent->pointers[position + 1];
-            if (index == 0 && rightBrother->size > T - 1) {
-                // pegar emprestado do nó da direita
-            }
-
-            /* int pos;
-            int success;
-            Node *parentNodeWithKey = NULL;
-            // se após pegar a maior chave o ponteiro parent for NULL, então significa que a chave está
-            // em node->pointers[position]
-            Node *nodeWithMaxKey = getMaxKeyIfPossible(node->pointers[position], &pos, &success, node, &parentNodeWithKey);
-
-            if (success) {
-                node->keys[position] = nodeWithMaxKey->keys[pos];
-                if (nodeWithMaxKey->isLeaf) {
-                    removeFromLeafNode(nodeWithMaxKey, nodeWithMaxKey->keys[pos]);
-                } else {
-                    // não precisamos nos preocupar para verificar esse nó, pois sabemos que ele 
-                    //removeWrapper(nodeWithMaxKey, key);
-                    // se o nó que contém a maior chave é um nó interno, então essa chave estará na posição
-                    // size-1 desse nó, logo, podemos apenas decrementar o tamanho desse nó
-                    nodeWithMaxKey->size--;
-                }
-            } 
-            // não tem como pegar a maior chave da esquerda, então iremos tentar pegar a menor chave da dreita
-            else {
-                int pos;
-                int success;
-                Node *nodeWithMinKey = getMinKeyIfPossible(node->pointers[position + 1], &pos, &success);
-                if (success) {
-                    node->keys[position] = nodeWithMinKey->keys[pos];
-
-                    if (nodeWithMinKey->isLeaf) {
-                        removeFromLeafNode(nodeWithMinKey, nodeWithMinKey->keys[pos]);
-                    } else {
-                        for (int i = pos; i < nodeWithMinKey->size - 1; i++) {
-                           nodeWithMinKey->keys[i]  = nodeWithMinKey->keys[i + 1];
-                        }
-                        for (int i = pos; i < nodeWithMinKey->size; i++) {
-                            nodeWithMinKey->pointers[i] = nodeWithMinKey->keys[i + 1];
-                        }
-                        nodeWithMinKey->size--;
-                    }
-                } else {
-                    // não tem como pegar a maior chave da esquerda e nem a menor chave da direita
-
-                }
-            } */
-            // todo: verificar a remoção de nó interno com size > T - 1
-
-        } else if (!node->isLeaf && node->size <= T - 1) {
-            // todo: vai ter que fazer aqueles processos de rotação ou merge com nós internos
-        }
-    } else {
-        if (node->isLeaf) {
-            return 0;
-        } else {
-            int sucess = removeNode(node, index, node->pointers[index], key);
-            // todo: fazer a verificação se o nó alterado (node->pointers[index]) continua com tamanho > T-1
-            // todo: sem não tiver size > T - 1, então precisa realizar as configurações para arrumar
-            return sucess;
-            // obs, ao retornar da remoção, precisamos verificar se o nó continuar tendo tamanho maior do que
-            // T - 1, e se não tiver, precisaremos arrumar a estrutura.
-
+        // arrumar os ponteiros do irmão da direita
+        for (int i = 0; i < rightBrother->size; i++) {
+            rightBrother->pointers[i] = rightBrother->pointers[i + 1];
         }
     }
 }
 
-void mergeLeaf(Node *parent, int position, Node *node, int withLeftNode) {
-    Node *rightBrother = parent->pointers[position + 1];
+void borrowFromLeft(Node *parent, int position, Node *node) {
+    Node *leftBrother = parent->pointers[position - 1];            
+    // passar as chaves do nó atual uma posição para direita
+    for (int i = node->size; i > 0; i--){
+        node->keys[i] = node->keys[i-1];
+    }
+    node->keys[0] = parent->keys[position - 1];
+
+    // passar os ponteiros uma posição para a direita
+    if (!node->isLeaf) {
+        for (int i = node->size + 1; i > 0; i--) {
+            node->pointers[i] = node->pointers[i - 1];
+        }
+    }
+    node->size++;
+
+    parent->keys[position - 1] = leftBrother->keys[leftBrother->size - 1];
+    if (!node->isLeaf) {
+        node->pointers[0] = leftBrother->pointers[leftBrother->size];
+    }
+    leftBrother->size--;
+}
+
+void mergeNodeToLeft(Node *parent, int position, Node *node) {
     Node *leftBrother = parent->pointers[position - 1];
-    Node *myNode = node;
-
-    int keyFromParent = parent->keys[position];
+    //leftBrother->keys[leftBrother->size - 1] = parent->keys[position - 1];
+    leftBrother->keys[leftBrother->size] = parent->keys[position - 1];
+    leftBrother->size++;
     
-    if (withLeftNode) {
-        myNode = leftBrother;
-        rightBrother = node;
-        keyFromParent = parent->keys[position - 1];
-        position--;
+    for (int i = 0; i < node->size; i++) {
+        leftBrother->keys[leftBrother->size + i] = node->keys[i];
     }
 
-    // realizar o merge do nó atual com o nó da direita
-    
-    myNode->keys[myNode->size] = keyFromParent;
-    myNode->size++;
-    for (int i = 0; i < rightBrother->size; i++) {
-        myNode->keys[myNode->size + i] = rightBrother->keys[i];
+    if (!node->isLeaf) {
+        for (int i = 0; i <= node->size; i++) {
+            leftBrother->pointers[leftBrother->size + i] = node->pointers[i];
+        }
     }
-    myNode->size += rightBrother->size;
-    rightBrother->size = 0;
-    // arrumando as chaves do pai
-    for (int i = position; i < parent->size - 1; i++) {
+    leftBrother->size += node->size;
+    node->size = 0;
+    //arrumar as chaves do nó pai
+    for (int i = position - 1; i < parent->size - 1; i++) {
         parent->keys[i] = parent->keys[i + 1];
     }
-    // arrumando os ponteiros do pai
-    for (int i = position + 1; i < parent->size; i++) {
+
+    // arrumar os ponteiros do nó pai
+    for (int i = position; i < parent->size; i++) {
         parent->pointers[i] = parent->pointers[i + 1];
     }
     parent->size--;
 }
 
-void leftRotationLeaf(Node *parent, int position, Node *node) {
-    Node * rightBrother = parent->pointers[position + 1];
 
-    if (rightBrother->size > T - 1) {
-        // tem como pegar emprestado
-        int keyFromParent = parent->keys[position];
-        node->keys[node->size] = keyFromParent;
-        node->size++;
-        parent->keys[position] = rightBrother->keys[0];
-        // arrumar as chaves do irmão da direita
-        for (int i = 0; i < rightBrother->size - 1; i++) {
-            rightBrother->keys[i] = rightBrother->keys[i + 1];
-        }
-        rightBrother->size--;
-    }
-}
-
-void rightRotationLeaf(Node *parent, int position, Node *node) {
-    Node *leftBrother = parent->pointers[position - 1];
-
-    if (leftBrother->size > T - 1) {
-        // pegar emprestado da esquerda
-        int keyFromParent = parent->keys[position - 1];
-        insertIncompleteNode(node, keyFromParent);
-        parent->keys[position - 1] = leftBrother->keys[leftBrother->size - 1];
-        leftBrother->size--;
-    }
-}
-
-void mergeInternalNode(Node *parent, int position, Node *node, int withLeftNode) {
-    if (withLeftNode) {
-        Node *leftBrother = parent->pointers[position - 1];
-
-        int keyFromParent = parent->keys[position];
-        leftBrother->keys[leftBrother->size] = keyFromParent;
-        leftBrother->size++;
-
-        // passar as chaves do nó para o irmão da esquerda
-        for (int i = 0; i < node->size; i++) {
-            leftBrother->keys[leftBrother->size + i] = node->keys[i];
-        }
-
-        // passar os ponteiros do nó para o irmão da esquerda
-        for (int i = 0; i <= node->size; i++) {
-            leftBrother->pointers[leftBrother->size + i] = node->pointers[i];
-        }
-
-        leftBrother->size += node->size;
-        node->size = 0;
-
-        // arrumar as chaves do pai, começa em position - 1, pois realizamos o merge no nó da esquerda
-        for (int i = position - 1; i < parent->size - 1; i++) {
-            parent->keys[i] = parent->keys[i + 1];
-        }
-
-        // arrumar ponteiros do pai
-        for (int i = position; i < parent->size; i++) {
-            parent->pointers[i] = parent->pointers[i + 1];
-        }
-        parent->size--;
-    } else {
-        // merge com o nó da direita
-        Node *rightBrother = parent->pointers[position + 1];
-        int keyFromParent = parent->keys[position];
-
-        node->keys[node->size] = keyFromParent;
-        node->size++;
-
-        // passa as chaves do nó da direita para o nosso nó
-        for (int i = 0; i < rightBrother->size; i++) {
-            node->keys[node->size + i] = rightBrother->keys[i];
-        }
-
-        // passa os ponteiros do nó da direita para o nosso nó
-        for (int i = 0; i <= rightBrother->size; i++) {
-            node->pointers[node->size + i] = rightBrother->keys[i];
-        }
-        node->size+= rightBrother->size;
-        rightBrother->size = 0;
-        
-        // arrumar as chaves do pai
-        for (int i = position; i < parent->size - 1; i++) {
-            parent->keys[i] = parent->keys[i + 1];
-        }
-
-        // arrumar os ponteiros do pai;
-        for (int i = position + 1; i < parent->size; i++) {
-            parent->pointers[i] = parent->pointers[i + 1];
-        }
-        parent->size--;
-    }
-}
-
-void removeFromLeafNode(Node *node, int key) {
-    if (node->isLeaf && node->size > T-1) {
-        int index = 0;
-        while (index < node->size && node->keys[index] < key) {
-            index++;
-        }
-
-        if (node->keys[index] == key) {
-            for (int i = index; i < node->size - 1; i++) {
-                node->keys[i] = node->keys[i + 1];
+int removeNode(Node *parent, int position, Node *node, int key) {
+    if (node->size > T-1) {
+        if (node->isLeaf) {
+            int index = 0;
+            while (index < node->size && node->keys[index] < key) {
+                index++;
             }
-            node->size--;
+
+            if (index < node->size && node->keys[index] == key) {
+                // remover da folha
+                for (int i = index; i < node->size - 1; i++) {
+                    node->keys[i] = node->keys[i + 1];
+                }
+                node->size--;
+                // retornar dizendo que houve sucesso
+                return 1;
+            } else {
+                // não encontrou a chave na folha
+                return 0;
+            }
+        } else {
+            int index = 0 ;
+
+            while (index < node->size && node->keys[index] < key) {
+                index++;
+            }
+
+            if (index < node->size && node->keys[index] == key) {
+                int successLeft = 0;
+                // pegar a maior chave da sub árvore da esquerda
+                if (node->pointers[index]->size > T-1) {
+                    int pos;
+                    int success;
+                    Node *nodeWithKey = getMaxKeyIfPossible(node->pointers[index], &pos, &success);
+                    if (success) {
+                        node->keys[index] = nodeWithKey->keys[pos];
+                        successLeft = 1;
+                        return removeNode(node, index, node->pointers[index], nodeWithKey->keys[pos]);
+                    }
+                } 
+
+                int successRight = 0;
+                // pegar a menor chave da sub árvore da direita
+                if (node->pointers[index + 1]->size > T-1 && !successLeft) {
+                    int pos;
+                    int success;
+                    Node *nodeWithKey = getMinKeyIfPossible(node->pointers[index + 1], &pos, &success);
+                    if (success) {
+                        node->keys[index] = nodeWithKey->keys[pos];
+                        successRight = 1;
+                        return removeNode(node, index + 1, node->pointers[index + 1], nodeWithKey->keys[pos]);
+                    }
+                } 
+                
+                // Se não conseguir pegar nem a maior chave da sub árvore da esquerda e nem a menor chave da sub árvore da direita então
+                // iremos realizar o merge entre essas duas sub árvores
+                if (!successLeft && !successRight) {
+                    Node *leftNode = node->pointers[index];
+                    Node *rigthNode = node->pointers[index + 1];
+                    mergeNodeToLeft(node, index + 1, rigthNode);
+                    return removeNode(node, index, leftNode, key);
+                }
+            } else {
+                // mandar remover no sub nó
+                return removeNode(node, index, node->pointers[index], key);
+            }
+            // verificar como realizar a remoção de chave que está em nó com size > T-1
+            // lembro que tinha que verificar se a subárvore da esquerda ou a subárvore da direita tinham size > T -1
+            // para conseguir pegar uma chave (maior da esquerda ou menor da direita) para substituir no lugar a chave a ser removida
+            // e caso não tiver como pegar nenhuma chave das subárvores, então iria fazer merge da chave a ser removida, com as subárvores;
+            // da esquerda e da direita
+            // e mandar remover o nó da árvore gerada pelo merge
+        }
+    } else {
+        // pegar emprestado do nó da direita
+        if (position == 0 && parent->pointers[position + 1]->size > T-1) {
+            printf("0 - pegando emprestado do nó na direita\n");
+            borrowFromRight(parent, position, node);
+            return removeNode(parent, position, node, key);
+        } else if (position == 0 && parent->pointers[position + 1]->size <= T-1) {
+            printf("0 - merge com nó na direita\n");
+            // ter que fazer merge com nó da direita
+            Node *rightBrother = parent->pointers[position + 1];
+            // vamos fazer o merge do nó da direita no nosso nó atual (que é o nó da esquerda)
+            mergeNodeToLeft(parent, position + 1, rightBrother);
+            return removeNode(parent, position, node, key);
+        }
+        // iremos juntar o nosso nó atual com o nó da esquerda
+        // isso é a mesma coisa que juntar o nó da esquerda com o nosso nó atual
+        else if (position == parent->size && parent->pointers[position - 1]->size > T-1) {
+            printf("size - pegando emprestado do nó na esquerda\n");
+            borrowFromLeft(parent, position, node);
+            return removeNode(parent, position, node, key);
+        } else if (position == parent->size && parent->pointers[position - 1]->size <= T-1)  {
+            //todo:está dando erro aqui 
+            printf("size - merge com nó na esquerda\n");
+            // ter que fazer merge com nó da esquerda
+            Node *leftBrother = parent->pointers[position - 1];
+            mergeNodeToLeft(parent, position, node);
+            // lembrando que aqui a raiz pode ter tamanho 1 por conta do merge e por isso, no removeWrapper precisaremos verificar se a raiz
+            // tem tamanho 0 e atualizar a nova raiz caso isso acontecer
+            return removeNode(parent, position - 1, leftBrother, key);
+        }
+        else {
+            printf("if - position > 0 e position < size\n");
+            if (parent->pointers[position - 1]->size > T-1) {
+                printf("> 0 e < size - pegando emprestado da esquerda\n");
+                borrowFromLeft(parent, position, node);
+                return removeNode(parent, position, node, key);
+            } else if (parent->pointers[position + 1]->size > T-1) {
+                printf("> 0 e < size - pegando emprestado da direita\n");
+                borrowFromRight(parent, position, node);
+                return removeNode(parent, position, node, key);
+            } else {
+                printf("> 0 e < size - merge com nó na esquerda");
+                // fazer merge com o nó da esquerda
+                Node *leftBrother = parent->pointers[position - 1];
+                mergeNodeToLeft(parent, position, node);
+                return removeNode(parent, position - 1, leftBrother, key);
+            }
         }
     }
 }
@@ -538,12 +484,11 @@ void removeFromLeafNode(Node *node, int key) {
         // chave do nó atual.
         // Se não, ou seja, nó atual tem tamanho menor ou igual a T - 1 e o último sub nó tiver tamanho 0, então não conseguiremos
         // pegar a última chave
-Node *getMaxKeyIfPossible(Node *node, int *position, int *success, Node *parent, Node **parentNodeWithKey) {
+Node *getMaxKeyIfPossible(Node *node, int *position, int *success) {
     if (node->isLeaf && node->size > T - 1) {
         printf("\nnode->isLeaf && node->size > T - 1\n");
         *position = node->size - 1;
         *success = 1;
-        *parentNodeWithKey = parent;
         return node;
     } else if (node->isLeaf && node->size <= T - 1)  {
         printf("\nnode->isLeaf && node->size <= T - 1\n");
@@ -555,12 +500,11 @@ Node *getMaxKeyIfPossible(Node *node, int *position, int *success, Node *parent,
         printf("\n!node->isLeaf\n");
         if (node->pointers[node->size]->size > 0) {
             printf("\nnode->pointers[node->size]->size > 0\n");
-            return getMaxKeyIfPossible(node->pointers[node->size], position, success, parent, &(*parentNodeWithKey));
+            return getMaxKeyIfPossible(node->pointers[node->size], position, success);
         } else if (node->pointers[node->size]->size == 0 && node->size > T - 1) {
             printf("\nnode->pointers[node->size]->size == 0 && node->size > T - 1\n");
             *position = node->size - 1;
             *success = 1;
-            *parentNodeWithKey = parent;
             return node;
         } else if (node->pointers[node->size]->size == 0 && node->size <= T - 1) { 
             printf("\nnode->pointers[node->size]->size == 0 && node->size <= T - 1\n");
@@ -594,61 +538,3 @@ Node *getMinKeyIfPossible(Node *node, int *position, int *success) {
         }
     } 
 }
-
-/*
-int remove(Node *node, int key) {
-    int index = 0;
-    while (index < node->size && node->keys[index] < key) {
-        index++;
-    }
-
-    if (node->isLeaf) {
-        if (node->keys[index] == key) {
-            for (int i = index; i < node->size; i++) {
-                node->keys[i] = node->keys[i + 1];
-            }
-            node->size--;
-            return 1;
-        } else {
-            return 0;
-        }
-    } else {
-        // Fazendo aqui o caso de remoção se a chave estiver em nó folha (Falta a parte da chave estando em nó interno)
-        Node *subNode = node->pointers[index];
-
-        // ao invés de percorrer o subnó verificando se a chave está lá,
-        // // podemos verificar se o subnó é uma folha e 
-        int isInSubNode = 0;
-        for (int i = 0; i < subNode->size; i++) {
-            if (subNode->keys[i] == key) {
-                isInSubNode = 1;
-                break;
-            }
-        }
-
-        if (!isInSubNode && !subNode->isLeaf) {
-            int success = remove(subNode, key);
-            // arrumar nó no retorno da chamada recursiva caso fique com size <= T-1
-            return success;
-        } else if (!isInSubNode && subNode->isLeaf){
-            return 0;
-        }
-
-        // só podemos realizar esse if se soubermos que a chave está dentro do nó
-        if (subNode->size > T-1 ) {
-            int success = remove(subNode, key);
-            // aqui iremos precisar verificar se o subnó após a remoção continua tendo size > T - 1 e
-            // fazer as alterações caso não tenha
-            // isso é, no retorno da chamda recursiva
-        } else {
-            // verificar se irmão da esquerda (e direita) do subnó possui chave para emprestar (size > T - 1)
-            // se tiver, fazer as alterações necessárias
-            // em seguida chamar para fazer a remoção diretamente do sub nó
-            // lembrar de retornar a chamda
-
-            // Se não tiver, fazer merge com o irmão esquerdo ou direito
-            // em seguida chamar função para remover chave a partir do nó gerado pelo merge, pois sabemos que 
-            // esse nó agora terá 2T - 1 chaves
-        }
-    }
-}*/
