@@ -507,7 +507,7 @@ void mergeNodeToLeft(Node *parent, int position, Node *node) {
  * @brief Retorna a maior chave de uma árvore
  * @return O retorno é um ponteiro para o nó que contém a maior chave
  * @return A variável position indica a posição da maior chave dentro do nó
- * @return A variável success indice se é possível pegar a maior chave de dentro do nó
+ * @return A variável success indica se é possível pegar a maior chave de dentro do nó
  
  Se o nó atual for folha e tiver tamanho maior do que T - 1, então é possível pegar a maior chave
  Se o nó atual for folha e tiver tamanho menor ou igual a T - 1, então não é possível pegar a maior chave
@@ -544,6 +544,19 @@ Node *getMaxKeyIfPossible(Node *node, int *position, int *success) {
     }
 }
 
+/**
+ * @brief Retorna a menor chave de uma árvore
+ * @return O retorno é um ponteiro para o nó que contém a menor chave
+ * @return A variável position indica a posição da menor chave dentro do nó
+ * @return A variável success indica se é possível pegar a menor chave de dentro do nó
+ * 
+ * Se o nó for folha, então retorna a chave da posição 0
+ * Se o nó for interno, então verifica se o nó apontado pelo ponteiro da posição 0 tem tamanho > 0
+ *  Se tiver, então iremos mandar procurar a menor chave desse sub nó na posição 0
+ *  Se não, verificaremos se o nó atual tem tamanho > T-1
+ *      Se tiver, então conseguiremos pegar a menor chave
+ *      Se não tiver, então não conseguiremos pegar a menor chave
+ */
 Node *getMinKeyIfPossible(Node *node, int *position, int *success) {
     if (node->isLeaf && node->size > T - 1) {
         *success = 1;
