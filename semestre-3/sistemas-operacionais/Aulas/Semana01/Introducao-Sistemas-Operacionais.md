@@ -1,9 +1,9 @@
 # Introdução aos Sistemas Operacionais
-##### Professor: Hélio Crestana Guardia
-##### Universidade Federal de São Carlos
+## Professor: Hélio Crestana Guardia
+## Universidade Federal de São Carlos
 ---
 
-#### Definições
+### Definições
 O que é e para que serve um sistema operacional (SO)?
 
 Basta ligar um sistema computacional, como um computador de mesa, um notebook, um tablet, smartphone, ou mesmo um smartwatch, para que um SO entre em ação.
@@ -47,7 +47,7 @@ Hélio
 
 ___
 
-#### Histórico de SOs
+### Histórico de SOs
 
 Como surgiram e como evoluíram os Sistemas Operacionais?
 
@@ -93,7 +93,7 @@ Muitas otimizações têm sido introduzidas nas estratégias e no desenvolviment
 
 ---
 
-#### Tipos de SOs
+### Tipos de SOs
 
 Como SOs diferem em função dos recursos gerenciados e dos usos desses recursos?
 
@@ -116,7 +116,7 @@ O resultado da presença do SO é que os programas podem ser escritos em linguag
 
 ---
 
-#### Processador e execução de instruções
+### Processador e execução de instruções
 
 Quais são e para que servem os recursos típicos de um sistema computacional?
 
@@ -291,7 +291,7 @@ Além dos bits de privilégio dos FLAGS, o campo de I/O Port Permission no TSS d
 Exemplos de instruções privilegiadas para E/S incluem: IN, INS, OUT, OUTS, CLI (clear interrupt-enable flag), and STI (set interrupt-enable flag). Tentativas de executar essas instruções sem o privilégio devido causam exceções (general protection exception).
 
 ---
-#### Boot: carregamento inicial do SO
+### Boot: carregamento inicial do SO
 Se o funcionamento de um processador é baseado num ciclo contínuo de busca e execução de instruções, como funciona o boot, ou seja, o carregamento inicial do sistema operacional? 
 
 O ciclo de busca e execução de instruções do processador é válido desde o instante  em que o computador é ligado. Isso significa que para o boot do computador é preciso que já exista algum programa a executar na memória. Como a memória RAM é volátil (*) e vai estar zerada quando o computador for ligado, apela-se para a ajuda da BIOS. Trata-se de um firmware mantido numa memória não volátil, mas que é endereçada como RAM. Assim, no boot, é **forçado um valor** (https://en.wikipedia.org/wiki/Reset_vector) para o registrador ponteiro de instruções (Program Counter - PC), que é um endereço que aponta ao programa básico de entrada e saída, mantido tipicamente numa memória flash (ou alguma outra tecnologia não volátil). 
@@ -341,7 +341,7 @@ A common misconception is that UEFI is a replacement for BIOS. In reality, both 
 A legacy BIOS loads a 512 byte flat binary blob from the MBR of the boot device into memory at physical address 7C00 and jumps to it. The bootloader cannot return back to BIOS. UEFI firmware loads an arbitrary sized UEFI application (a relocatable PE executable file) from a FAT partition on a GPT-partitioned boot device to some address selected at run-time. Then it calls that application's main entry point. The application can return control to the firmware, which will continue searching for another boot device or bring up a diagnostic menu.
 
 ---
-#### Abstrações providas por SOs para o uso dos sistemas computacionais
+### Abstrações providas por SOs para o uso dos sistemas computacionais
 
 Para simplificar o uso dos recursos de um sistema computacional, SOs fornecem algumas abstrações, relacionadas à execução de programas e ao armazenamento de dados.
 
@@ -411,7 +411,7 @@ Com isso, aspectos associados desde os protocolos de comunicação e as trocas d
 Detalhes de estruturas de comunicação entre processos, incluindo descrições dos mecanismos, suas funcionalidades e mesmo sobre a lógica de utilização para diferentes tipos de aplicação serão tratados em capítulo dedicado.
 
 ---
-#### Interação com o SO
+### Interação com o SO
 
 Como é a interação dos usuários com um SO e dos programas com o SO?
 
@@ -515,7 +515,7 @@ A implementação das funções de acesso às chamadas de sistema é feita pela 
 Um outro aspecto interessante das interfaces de chamada de sistema é a otimização do acesso em algumas chamadas de sistema frequentes e que envolvem apenas a leitura de informações mantidas pelo kernel. Esse é o caso, por exemplo, das chamadas gettimeofday(2), clock_gettime(2), getcpu(2) e time(2). Uma estratégia para realizar a chamada gettimeofday, por exemplo, de forma rápida consiste em fazer o kernel manter as informações sobre o horário atual em uma localização fixa da memória, que é mapeada no espaço de endereçamento de todos os processos. Desta forma, a interface em alto nível da chamada de sistema pode apenas ler o valor e retorná-lo ao processo, sem gerar uma mudança do processador para modo kernel. Da mesma maneira, algumas outras chamadas de sistema poderiam ser implementadas apenas através de acesso à memória. No Linux, essas implementações de chamadas de sistema que evitam a mudança do modo de execução do processador para o kernel space (nível 0) eram tratadas na biblioteca vsyscalls e passaram a ser implementadas na biblioteca vdso (Virtual Dynamic Shared Object). Ambas são mapeadas para o espaço de endereçamento de cada processo quando ele é carregado para execução.
 
 ---
-#### Serviços do SO para os programas
+### Serviços do SO para os programas
 
 Quais são os serviços típicos oferecidos pelos SOs aos programas? Como esses serviços são usados?
 
@@ -530,7 +530,7 @@ De maneira geral, em sistemas compatíveis com padrões POSIX, as chamadas de si
 Em sistemas Gnu/Linux, uma lista ampla das syscalls pode ser vista no [manual](https://man7.org/linux/man-pages/man2/syscalls.2.html) online ($ man syscalls).
 
 ---
-#### Estrutura de SOs
+### Estrutura de SOs
 
 SOs têm muitos recursos a gerenciar e muitos serviços a prestar. Como são organizados os seus códigos e como funcionam suas partes?
 

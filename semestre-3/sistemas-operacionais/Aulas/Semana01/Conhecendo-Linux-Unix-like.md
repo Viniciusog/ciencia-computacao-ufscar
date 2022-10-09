@@ -49,7 +49,7 @@ PS2: quer conhecer filosofias do projeto original do Unix? Veja
     (https://people.eecs.berkeley.edu/~brewer/cs262/unix.pdf)
 
 ---
-#### Interface gráfica    
+### Interface gráfica    
 
 Efetuando-se o login numa interface gráfica, o usuário passa a interagir com o sistema Linux através de um ambiente de janelas. Entre as opções de configuração do ambiente gráfico, que existem às dezenas, algumas das mais comuns são GNOME, KDE e UNITY(LightDM).
 
@@ -72,7 +72,7 @@ Para encerrar uma sessão gráfica é preciso executar um procedimento de logout
 Também por motivos de consistência do sistema de arquivos, é importante selecionar um procedimento de desligamento via software antes de desligar o computador.
 
 ---
-#### SHELL
+### SHELL
 
 **Conectando-se ao sistema: login**
 
@@ -217,7 +217,7 @@ A combinação de teclas <ctrl><D>, normalmente definida como caracter indicador
 - exit: função interna do shell para encerrar um nível na sequência de operações sendo executadas ou um shell interativo. No shell de login tem o mesmo efeito de logout
 
 ---
-#### Ajuda Online
+### Ajuda Online
 
 A melhor fonte de informações em sistemas Linux/Unix é o manual on-line existente em todos os sistemas! Informações sobre o sistema, comandos utilitários, chamadas de sistema, funções das APIs instaladas, arquivos de configuração e muito mais, são comumente instaladas num sistema Unix na forma de páginas de manual. Digitando-se comandos diretamente na sessão do shell é possível acessar as suas funcionalidades.
 
@@ -251,7 +251,7 @@ Já os comandos **whereis** e **which** ajudam na **localização** de comandos 
 Informações específicas sobre o bash podem ser obtidas com o comando help, digitado diretamente no prompt do shell. Particularmente, vale a pena examinar a relação de comandos internos (BUILTIN), o tratamento de sinais, a configuração do terminal, entre outros aspectos.
 
 ----
-#### Utilitários comuns
+### Utilitários comuns
 
 Sistemas Unix-like possuem padronizações, como as especificadas por Single Unix Specification, que definem, entre outras coisas, um conjunto de programas utilitários comuns. 
 
