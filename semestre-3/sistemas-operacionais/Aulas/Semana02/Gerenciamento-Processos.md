@@ -3,7 +3,7 @@
 ## Universidade Federal de São Carlos
 ---
 
-### Gerenciamento de processos
+## Gerenciamento de processos
 
 A execução de programas pode gerar a criação de um ou mais processos (e threads). Assim, o termo processo é geralmente usado para indicar um programa em execução. Processos são uma das principais abstrações oferecidas pelos sistemas operacionais para a execução de programas. 
 

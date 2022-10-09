@@ -3,7 +3,7 @@
 ## Universidade Federal de São Carlos
 ---
 
-### BIOS
+## BIOS
 
 Usando algum sistema computacional ao qual você tem acesso, vamos examinar o carregamento inicial do sistema operacional. 
 Ao ligar o computador observe se há indicação de alguma combinação de teclas a serem pressionadas para ativar acesso à interface de configuração dos parâmetros de inicialização e operação desses sistema.
@@ -28,7 +28,7 @@ Ai, ai, ai, me esqueci que não é possível estar lendo essas questões enquant
 Hélio
 
 ---
-### Quão rápido? Por quê?
+## Quão rápido? Por quê?
 
 Você tem um cronômetro à mão? Use-o para medir o tempo que leva para:
 
@@ -44,7 +44,7 @@ Será que há algo que pudesse ser feito para reduzir o tempo até que o sistema
 
 ---
 
-### Controle de acesso
+## Controle de acesso
 
 Com o SO  carregado, analise o processo de identificação de usuário para controle de acesso ao sistema.
 
@@ -58,7 +58,7 @@ Será que os procedimentos de autenticação requeridos do usuário e os atrasos
 
 ---
 
-### Dispositivos detectados pelo SO
+## Dispositivos detectados pelo SO
 
 Quais dispositivos físicos foram detectados no sistema computacional em uso?
 
@@ -79,7 +79,7 @@ Veja: processador, memória, unidades de armazenamento, interfaces de rede (com 
 Em geral, se o SO está detectando esses dispositivos, é porque há algum software controlador para esse dispositivo (device driver) para esse SO.
 
 ---
-### Gerenciador de tarefas
+## Gerenciador de tarefas
 
 O que está em execução no sistema operacional?
 

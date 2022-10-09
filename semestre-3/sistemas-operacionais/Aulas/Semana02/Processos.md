@@ -3,7 +3,7 @@
 ## Universidade Federal de São Carlos
 ---
 
-### Definições
+## Definições
 
 À medida que foi desejável usar os computadores para execução [simultânea] de diversos programas, foi preciso criar mecanismos para representar e controlar cada programa. Para tanto, os SOs criaram uma abstração que é o conceito de processo. De maneira resumida, **processo** é um termo usado para indicar um programa em execução.
 
@@ -54,7 +54,7 @@ Usando o mecanismo de processos e as estruturas de controle, ~~cada programa em 
 É claro que há programas em que a questão do tempo de execução é crítica, mas isso será tratado posteriormente, ao estudarmos mecanismos de seleção de processos para execução.
 
 ---
-### Criação de processos
+## Criação de processos
 
 Se um processo é um programa em execução, talvez valha a pena começarmos a discussão sobre a criação de um processo pensando no conteúdo de um arquivo executável.
 
@@ -93,7 +93,7 @@ Em sistemas Windows, a chamada de sistema para criação de um novo processo é 
 Em todos os casos, cada novo processo terá recursos específicos alocados pelo SO, incluindo um novo descritor de processo, áreas de memória para código e dados, informações de arquivos abertos, informações sobre o contexto de execução, etc. Alguns desses recursos, como algumas áreas de memória, podem eventualmente ser compartilhados pelo SO entre processos relacionados, como veremos posteriormente. 
 
 ---
-### Término de processo
+## Término de processo
 
 Se já sabemos como um processo é criado, falta pensar em como terminá-lo.
 
@@ -159,7 +159,7 @@ Quantos processos existem no sistema? Quais são seus estados? Por quê há proc
 Já é possível perceber que o SO é mesmo um grande gerenciador de recursos e prestador de serviços. Programas ativados automaticamente na inicialização do SO e programas ativados pelos usuários vão gerar processos, que ficam competindo pelo uso do(s) processador(es) e dos serviços do SO.
 
 ---
-### Representação de processos
+## Representação de processos
 
 Como já discutido, processos são programas em execução.
 
