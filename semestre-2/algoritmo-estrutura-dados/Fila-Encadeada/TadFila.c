@@ -18,6 +18,7 @@ Fila *criar() {
     fila->inicio = NULL;
     fila->fim = NULL;
     fila->tam = 0;
+    return fila;
 }
 
 void inserir(Fila *fila, char valor) {
