@@ -127,3 +127,43 @@ O encerramento de processos é feito com o envio de um sinal apropriado. A parti
 
 ```killall -9 nome_prog```
 
+---
+## Redirecionamento de E/S de processos
+
+Programas podem escrever informações no terminal onde executam e podem ler dali dados de entrada para suas execuções. Pensando num program C, por exemplo, usa-se **printf** ou **fprintf(stdout, ...)** para imprimir na janela do programa. Para ler dados do terminal, pode-se usar **scanf**, **fscanf(stdin,... )**, **fgets( ..., stdin)**, entre outros.
+
+Como pode-ser observar, há referências explícitas a stdin para entrada e stdout para saída, ou isso é assumido implicitamente nos comandos, como em printf e scanf.
+
+Ocorre que o sistema operacional mantém, para cada processo, informações sobre os arquivos que estão e uso. Essas informações são salvas numa estrutura interna do SO chamada de vetor de arquivos abertos. Na prática, stdin, stdout e stderr são nomes lógicos que fazem referências às 3 primeiras desse vetor.
+
+A entrada e saída de dados em processos no ambiente Unix é feita através da escrita e da leitura em 3 arquivos lógicos: stdin (0), stdout (1) e stderr (2).
+
+Representados pelas 3 primeiras posições do vetor de arquivos abertos de cada processo, esses arquivos geralmente apontam para o terminal ou para a janela associada ao shell de ativação do processo. Esse direcionamento é herdado na cópia do vetor de arquivos que ocorre na criação de cada processo iniciado pelo shell.
+
+Ajustes especiais indicados na linha de comando de ativação de um processo, entretanto, permitem redirecionar esses dados para outros arquivos, ou mesmo para a comunicação direta entre processos, através de pipes.
+
+> ou 1>: redirecionamento da saída de dados de um processo (overwrite). Ex: ls > diret
+
+>> ou 1>>: redirecionamento da saída de dados (append). Ex: ls >> diret
+
+2> : redirecionamento das mensagens de erro. Ex: make >& arq_msg_erro
+
+2>> : redirecionamento das mensagens de erro (append). Ex: prog 2>> msg_erro
+
+< : redirecionamento da entrada de dados de um processo. Ex: prog1 < arq_dados
+
+&>: redirecionamento de stdout e stderr para o mesmo local. Ex: prog &> saida
+
+Nos exemplos acima, vê-se o redirecionamento da saída (stdout), da entrada (stdin) e das mensagens de erro (stderr), fazendo-os apontar para arquivos.
+
+Além disso, há um outro mecanismo muito útil em sistemas Unix, chamado pipe. Trata-se de um mecanismo de comunicação entre processos, mantido numa área de memória do SO, mas que é usado para leitura e escrita como se fosse um arquivo.
+
+Pipes também podem ser usados para o redirecionamento de E/S de processos, comumente fazendo com que os dados de saída gerados por um processo sejam direcionados como dados de entrada de outro processo. Assim, o pipe funciona como se fosse um buffer em memória, que acomoda os dados de saída que um processo gera, até que outro processo associado à leitura deste pipe os consuma. 
+
+No shell, o uso de pipes no redirecionamento de E/S de processos é feito como segue:
+
+| **(pipe):** cria um mecanismo de comunicação entre processos. Ex: ls -la | more
+
+Em sistemas Unix há ainda um programa utilitário que permite receber a saída de um processo, via um pipe, e duplicar essa saída, fazendo com que ela vá tanto para um arquivo especificado quanto para a janela do terminal.
+
+**tee**: copia os dados do arquivo padrão de entrada para o arquivo padrão de saída, fazendo opcionalmente uma cópia para outros arquivos de saída. Ex: p1 | tee result

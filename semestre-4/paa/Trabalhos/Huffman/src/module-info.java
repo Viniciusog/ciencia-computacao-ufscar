@@ -1,0 +1,9 @@
+/**
+ * 
+ */
+/**
+ * @author SAMSUNG
+ *
+ */
+module Huffman {
+}
