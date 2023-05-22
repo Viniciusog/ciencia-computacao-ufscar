@@ -35,3 +35,5 @@ myCat = Cat("lili", 2, 37, 38, 39, attCat = 8)
 print("\n --cat--\n" + str(myCat.attCat))
 print(myCat.anotherAttributes) # (37, )
 
+class Fish():
+    pass
