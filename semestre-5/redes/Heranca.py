@@ -104,3 +104,6 @@ p2.imprimir()
 
 p3 = Professor.criar_pessoa_com_ano_nascimento("pedro", 1990)
 p3.imprimir()
+
+
+# ver a parte de encapsulamento
