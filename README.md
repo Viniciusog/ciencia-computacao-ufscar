@@ -1,2 +1,2 @@
 # Ciência da Computação - UFSCar
-Exercícios realizados. Ciência da computação.
+Conteúdos, algoritmos e exercícios sobre diversas matérias do curso.
