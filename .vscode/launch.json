@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "c:/GitHub/BCC/semestre-2/algoritmo-estrutura-dados/ListaSimplesCompleta",
-      "program": "c:/GitHub/BCC/semestre-2/algoritmo-estrutura-dados/ListaSimplesCompleta/build/Debug/outDebug",
+      "cwd": "c:/GitHub/BCC/semestre-5/Monitoria-AED2/Lista1",
+      "program": "c:/GitHub/BCC/semestre-5/Monitoria-AED2/Lista1/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
